@@ -34,16 +34,17 @@ services:
         ipv4_address: 172.21.0.12
 
   client:
-    build: ./client/
+    image: node:23-alpine3.20
     ports:
-      - 4200:4200
-    env_file:
-      - ./conf/front.env
+      - '5173:5173'
     volumes:
-      - ./client/:/opt/app
+      - './client:/opt/app'
     networks:
       vnetwork:
         ipv4_address: 172.21.0.13
+    working_dir: /opt/app
+    command: npx vite --host=0.0.0.0
+    
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
