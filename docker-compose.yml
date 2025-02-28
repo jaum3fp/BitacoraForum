@@ -1,5 +1,5 @@
 networks:
-  vnetwork:
+  bitacora_forum_network:
     ipam:
       config:
         - subnet: 172.21.0.0/16
@@ -7,6 +7,7 @@ networks:
 services:
 
   db:
+    container_name: mysql-db
     image: mysql:5.7
     restart: always
     ports:
@@ -16,10 +17,11 @@ services:
     volumes:
       - ./mysql_data:/var/lib/mysql
     networks:
-      vnetwork:
+      bitacora_forum_network:
         ipv4_address: 172.21.0.10
 
   api:
+    container_name: fiber-api
     build: ./api/
     ports:
       - 8080:8080
@@ -30,23 +32,24 @@ services:
     depends_on:
       - db
     networks:
-      vnetwork:
+      bitacora_forum_network:
         ipv4_address: 172.21.0.12
 
   client:
-    image: node:23-alpine3.20
+    container_name: vue-client
+    build: ./client/
     ports:
       - '5173:5173'
     volumes:
       - './client:/opt/app'
+    depends_on:
+      - api
     networks:
-      vnetwork:
-        ipv4_address: 172.21.0.13
-    working_dir: /opt/app
-    command: npx vite --host=0.0.0.0
-    
+      bitacora_forum_network:
+        ipv4_address: 172.21.0.13    
 
   phpmyadmin:
+    container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin:latest
     ports:
       - 8005:80
@@ -55,5 +58,5 @@ services:
     depends_on:
       - db
     networks:
-      vnetwork:
+      bitacora_forum_network:
         ipv4_address: 172.21.0.11
