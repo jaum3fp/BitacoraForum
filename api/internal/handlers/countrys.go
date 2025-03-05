@@ -7,8 +7,8 @@ import (
 )
 
 func GetPostCountrys(c *fiber.Ctx) error {
-	postId := c.Params("id")
+	countryFlag := c.Params("flag")
 	var totalPosts int64
-	db.GetInstance().Model(&models.Post{}).Where("country_id = ?", postId).Count(&totalPosts)
+	db.GetInstance().Model(&models.Post{}).Joins("JOIN countries ON posts.country_id = countries.id").Where("countries.flag = ?", countryFlag).Count(&totalPosts)
 	return c.JSON(fiber.Map{ "total": totalPosts })
 }
