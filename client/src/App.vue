@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import ProfileMenu from './components/ProfileMenu.vue';
 import Navbar from './components/Navbar.vue';
-import PostsList from './components/PostsList.vue';
-import SearchBar from './components/SearchBar.vue';
 </script>
 
 
@@ -13,13 +11,7 @@ import SearchBar from './components/SearchBar.vue';
     <Navbar />
   </aside>
   <main>
-    <header>
-      <div class="title-container">
-        <h1>Bitacora Forum</h1>
-      </div>
-      <SearchBar />
-    </header>
-    <PostsList />
+    <router-view />
   </main>
 
 </template>
@@ -33,14 +25,6 @@ aside {
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 15vh;
-  gap: 8vh;
 }
 
 main {
