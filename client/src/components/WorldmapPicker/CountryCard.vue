@@ -12,14 +12,13 @@ interface CountryData {
 
 const { country } = defineProps<CountryCardProps>()
 const countryData = reactive<CountryData>({ name: '', total_posts: 0 })
-const flagapiUrl = computed(() => `https://flagsapi.com/${country.toUpperCase()}/flat/64.png`)
+const flagapiUrl = computed(() => `none`) // https://flagsapi.com/${country.toUpperCase()}/flat/64.png
 
 async function fetchCountryPosts() {
     const res = await fetch(`http://localhost:8080/api/v1/country/${country.toUpperCase()}`)
     const resJSON: CountryData = await res.json()
     countryData.name = resJSON.name
     countryData.total_posts = resJSON.total_posts
-    console.log(countryData)
 }
 
 watch(() => country, fetchCountryPosts, { immediate: true })
