@@ -12,3 +12,22 @@ func GetPostCountrys(c *fiber.Ctx) error {
 	db.GetInstance().Model(&models.Post{}).Joins("JOIN countries ON posts.country_id = countries.id").Where("countries.flag = ?", countryFlag).Count(&totalPosts)
 	return c.JSON(fiber.Map{ "total": totalPosts })
 }
+
+func GetCountry(c *fiber.Ctx) error {
+	type ThisResponse struct {
+		Name 		string 	`json:"name"`
+		TotalPosts 	int64 	`json:"total_posts"`
+	}
+	countryFlag := c.Params("flag")
+	var data ThisResponse
+	err := db.GetInstance().Model(&models.Country{}).
+		Select("countries.name, COUNT(posts.id) AS total_posts").
+		Joins("LEFT JOIN posts ON posts.country_id = countries.id").
+		Where("countries.flag = ?", countryFlag).
+		Group("countries.id").
+		First(&data)
+	if err.Error != nil {
+		return c.Status(404).JSON(fiber.Map{ "error": "Country not found" })
+	}
+	return c.JSON(data)
+}

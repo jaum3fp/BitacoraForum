@@ -18,5 +18,6 @@ func SetUpRoutes(router fiber.Router) {
 
 	// Countrys routes
 	router.Get("/country/:flag/posts", handlers.GetPostCountrys)
+	router.Get("/country/:flag", handlers.GetCountry)
 
 }
