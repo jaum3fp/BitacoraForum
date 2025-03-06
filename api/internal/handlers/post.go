@@ -9,9 +9,21 @@ import (
 
 
 func GetAllPosts(c *fiber.Ctx) error {
-	var posts []models.Post
-	db.GetInstance().Find(&posts)
-	return c.JSON(posts)
+
+	type ThisResponse struct {
+		models.Post
+		OwnerUsername string `json:"owner_username"`
+	}
+
+	var data []ThisResponse
+	err := db.GetInstance().Model(&models.Post{}).
+		Select("posts.*, users.username AS owner_username").
+		Joins("JOIN users ON posts.owner_id = users.id").
+		Find(&data)
+	if err.Error != nil {
+		return c.Status(404).JSON(fiber.Map{ "error": "Posts not found" })
+	}
+	return c.JSON(data)
 }
 
 func CreatePost(c *fiber.Ctx) error {
