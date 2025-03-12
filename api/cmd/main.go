@@ -15,7 +15,19 @@ func main() {
 
 	db.Init()
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		AppName:				"Bitacora Forum REST API v0.0.1",
+		BodyLimit:				4 * 1024 * 1024,
+		CaseSensitive:          true,
+		StrictRouting: 			true,
+		DisableStartupMessage: 	false,
+		ErrorHandler: func(c *fiber.Ctx, err error) error {
+			if e, ok := err.(*fiber.Error); ok {
+				return c.Status(e.Code).JSON(fiber.Map{"error": e.Message})
+			}
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+		},
+	})
 
 	app.Use(cors.New())
 	app.Use(logger.New())
