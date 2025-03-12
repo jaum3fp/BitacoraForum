@@ -20,14 +20,16 @@ func GetCountry(c *fiber.Ctx) error {
 	}
 	countryFlag := c.Params("flag")
 	var data ThisResponse
-	err := db.GetInstance().Model(&models.Country{}).
+	res := db.GetInstance().Model(&models.Country{}).
 		Select("countries.name, COUNT(posts.id) AS total_posts").
 		Joins("LEFT JOIN posts ON posts.country_id = countries.id").
 		Where("countries.flag = ?", countryFlag).
 		Group("countries.id").
 		First(&data)
-	if err.Error != nil {
-		return c.Status(404).JSON(fiber.Map{ "error": "Country not found" })
+	
+	if err := dbErrorHandler(c, res, "Country not found"); err != nil {
+		return err
 	}
+
 	return c.JSON(data)
 }
