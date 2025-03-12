@@ -6,12 +6,6 @@ import (
 	"github.com/jaum3fp/bitacora-forum/internal/models"
 )
 
-func GetPostCountrys(c *fiber.Ctx) error {
-	countryFlag := c.Params("flag")
-	var totalPosts int64
-	db.GetInstance().Model(&models.Post{}).Joins("JOIN countries ON posts.country_id = countries.id").Where("countries.flag = ?", countryFlag).Count(&totalPosts)
-	return c.JSON(fiber.Map{ "total": totalPosts })
-}
 
 func GetCountry(c *fiber.Ctx) error {
 	type ThisResponse struct {
