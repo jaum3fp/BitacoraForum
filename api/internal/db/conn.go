@@ -20,7 +20,7 @@ func Init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	instance.AutoMigrate(&models.Country{}, &models.User{}, &models.Post{})
+	instance.AutoMigrate(&models.Country{}, &models.User{}, &models.Tag{}, &models.Post{})
 }
 
 func GetInstance() *gorm.DB {
