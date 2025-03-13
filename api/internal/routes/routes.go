@@ -15,6 +15,9 @@ func SetUpRoutes(router fiber.Router) {
 	router.Get("/post/:id", handlers.GetPost)
 	router.Put("/post/:id", handlers.UpdatePost)
 	router.Delete("/post/:id", handlers.DeletePost)
+	
+	router.Get("/post/tag/:id", handlers.GetPostsByTag)
+	router.Patch("/post/:id/inc-view", handlers.IncrementPostViews)
 
 	// Countrys routes
 	router.Get("/country/:flag", handlers.GetCountry)
