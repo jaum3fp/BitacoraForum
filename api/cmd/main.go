@@ -10,17 +10,16 @@ import (
 	"github.com/jaum3fp/bitacora-forum/internal/routes"
 )
 
-
 func main() {
 
-	db.Init()
+	db := db.Connect()
 
 	app := fiber.New(fiber.Config{
-		AppName:				"Bitacora Forum REST API v0.0.1",
-		BodyLimit:				4 * 1024 * 1024,
-		CaseSensitive:          true,
-		StrictRouting: 			true,
-		DisableStartupMessage: 	false,
+		AppName:               "Bitacora Forum REST API v0.0.1",
+		BodyLimit:             4 * 1024 * 1024,
+		CaseSensitive:         true,
+		StrictRouting:         true,
+		DisableStartupMessage: false,
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			if e, ok := err.(*fiber.Error); ok {
 				return c.Status(e.Code).JSON(fiber.Map{"error": e.Message})
@@ -33,7 +32,7 @@ func main() {
 	app.Use(logger.New())
 
 	router := app.Group("/api/v1")
-	routes.SetUpRoutes(router)
+	routes.SetUpRoutes(router, db)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello World!")
