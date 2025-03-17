@@ -1,0 +1,26 @@
+:root {
+    color-scheme: light dark;
+    --text-color: light-dark(#000, #fff);
+    --primary-color: light-dark(#f2f2f2, #232323);
+    --seconary-color: light-dark(#ddddddc6, #272727);
+}
+
+html {
+    font-family: sans-serif;
+    min-height: 100vh;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+}
+
+h1 {
+    margin: 0;
+}
+
+#__nuxt {
+    width: 100%;
+    height: 100%;
+}

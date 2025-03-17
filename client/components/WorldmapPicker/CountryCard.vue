@@ -6,12 +6,19 @@ interface CountryCardProps {
 }
 
 interface CountryData {
+    id: number
     name: string
+    flag: string
     total_posts: number
 }
 
 const { country } = defineProps<CountryCardProps>()
-const countryData = reactive<CountryData>({ name: '', total_posts: 0 })
+const countryData = reactive<CountryData>({
+    id: 0,
+    name: '',
+    flag: '',
+    total_posts: 0
+})
 const flagapiUrl = computed(() => `none`) // https://flagsapi.com/${country.toUpperCase()}/flat/64.png
 
 async function fetchCountryPosts() {
@@ -21,6 +28,13 @@ async function fetchCountryPosts() {
     countryData.total_posts = resJSON.total_posts
 }
 
+async function useFlagsapi(cc: string) {
+    const res = await fetch(`https://restcountries.com/v3.1/alpha/${cc.toUpperCase()}`)
+    const resJSON = await res.json()
+    return resJSON.flags[0]
+
+}
+
 watch(() => country, fetchCountryPosts, { immediate: true })
 
 </script>
@@ -28,7 +42,7 @@ watch(() => country, fetchCountryPosts, { immediate: true })
 <template>
     <div>
         <div>
-            <img :src="flagapiUrl">
+            
         </div>
         <div>
             <h1>{{ countryData.name }}</h1>

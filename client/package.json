@@ -1,22 +1,20 @@
 {
-  "name": "app",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
-  },
+  "name": "nuxt-app",
   "dependencies": {
+    "@iconify-json/charm": "^1.2.2",
+    "@nuxt/ui": "^3.0.0-beta.4",
+    "nuxt": "^3.16.0",
+    "nuxt-svgo": "4.0.15",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
-    "@vue/tsconfig": "^0.7.0",
-    "typescript": "~5.7.2",
-    "vite": "^6.1.0",
-    "vue-tsc": "^2.2.0"
-  }
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "type": "module"
 }

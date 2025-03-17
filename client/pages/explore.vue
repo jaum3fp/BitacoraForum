@@ -6,7 +6,6 @@ import { ref } from 'vue';
 const country = ref('es')
 
 function onSelectedCountry(cc: string) {
-    console.log('Selected country:', cc)
     country.value = cc
 }
 </script>
@@ -14,10 +13,12 @@ function onSelectedCountry(cc: string) {
 
 <template>
 
-<div>
-    <CountryCard :country="country" />
-    <Worldmap @selected-country="onSelectedCountry" />
-</div>
+    <div>
+        <CountryCard :country="country" />
+        <div class="m-5">
+            <Worldmap @selected-country="onSelectedCountry" />
+        </div>
+    </div>
 
 </template>
 

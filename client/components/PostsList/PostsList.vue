@@ -11,7 +11,7 @@ interface PostData {
 let posts = ref<PostData[]>([])
 
 onMounted(async function() {
-    const res = await fetch('http://localhost:8080/api/v1/posts')
+    const res = await fetch('http://localhost:8080/api/v1/post/all')
     posts.value = await res.json()
 })
 
@@ -20,7 +20,7 @@ onMounted(async function() {
 
 <template>
 
-<section class="posts-container">
+<section class="d-flex flex-col gap-8 mx-[6vh]">
     <PostCard v-for="post in posts" 
         :title="post.title" 
         :description="post.content" 
@@ -32,12 +32,12 @@ onMounted(async function() {
 
 
 <style scoped>
-
+/*
 .posts-container {
     display: flex;
     flex-direction: column;
     gap: 3vh;
     margin: 6vh;
-}
+}*/
 
 </style>

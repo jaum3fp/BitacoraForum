@@ -1,21 +1,18 @@
 <svg id="worldmap" version="1.2" baseProfile="tiny" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="9 3 940 530" xml:space="preserve">
       <!-- Adapted from http://en.wikipedia.org/wiki/File:World_map_-_low_resolution.svg -->
     <style>
-      #bg {
-        fill: #f0f0f0;
-      }
       [cc] {
-        fill: transparent;
-        stroke: #555;
-        stroke-width: 0.5px;
-      }
-      [cc]:hover {
-        fill: #f0f0f0;
-        stroke: #000;
-        stroke-width: 1px;
-      }
+  fill: transparent;
+  stroke: #555;
+  stroke-width: 0.5px;
+}
+[cc]:hover {
+  fill: #f0f0f0;
+  stroke: #000;
+  stroke-width: 1px;
+}
     </style>
-    <rect id="bg" fill="green" x="9" y="3" width="100%" height="100%"/>
+    <rect id="bg" x="9" y="3" width="100%" height="100%"/>
     <g cc="tr">
       <path d="M558.7,209.19l-2.23,2.36l-8.2-0.24l-4.92-2.95l-4.8-0.12l-5.51,3.9l-5.16,0.24l-0.47,2.95h-5.86l-2.34,2.13v1.18l1.41,1.18v1.3l-0.59,1.54l0.59,1.3l1.88-0.94l1.88,2.01l-0.47,1.42l-0.7,0.95l1.05,1.18l5.16,1.06l3.63-1.54v-2.24l1.76,0.35l4.22,2.48l4.57-0.71l1.99-1.89l1.29,0.47v2.13h1.76l1.52-2.95l13.36-1.42l5.83-0.71l-1.54-2.02l-0.03-2.73l1.17-1.4l-4.26-3.42l0.23-2.95h-2.34L558.7,209.19L558.7,209.19z"/>
       <path d="M523.02,209.7l-0.16,3.55l3.1-0.95l1.42-0.95l-0.42-1.54l-1.47-1.17L523.02,209.7L523.02,209.7z"/>
