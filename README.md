@@ -45,10 +45,8 @@ PMA_HOST=mariadb
 # AT THE MOMENT EMPTY
 ```
 
-Finally, run ``docker compose up`` and you are done. Maybe the first time the api may throw an error because you have no user. Run ``docker exec -it mysql-db sh`` and once there, access the database and add it. You can also access phpmyadmin at ``http://localhost:8005`` and add it there. Now it should work.
+Finally, run ``docker compose up`` and you are done. Maybe the first time the api may throw an error because you have no database user. Run ``docker exec -it mysql-db sh`` and once there, access the database and add it. You can also access phpmyadmin at ``http://localhost:8005`` and add it there. Now it should work.
 
 To use the application “at its best” know that in ``api/scripts`` there are different scripts to insert false data in mysql.
 
 There may be network conflicts (among others). Feel free to modify ``docker-compose.yml`` to resolve them.
-
-If you want to save space, modify the ``Dockerfile`` of the client and remove the ``RUN npm install -g vite``, because this increases the size of the container and can be used without installing it with ``npx vite``.
