@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import PostCard from './PostCard.vue';
+import { API } from '~/consts';
+import { PostModel } from '~/models/post';
 
 interface PostData {
     title: string
@@ -11,7 +13,7 @@ interface PostData {
 let posts = ref<PostData[]>([])
 
 onMounted(async function() {
-    const res = await fetch('http://localhost:8080/api/v1/post/all')
+    const res = await PostModel.getAllPosts()
     posts.value = await res.json()
 })
 
@@ -21,10 +23,10 @@ onMounted(async function() {
 <template>
 
 <section class="d-flex flex-col gap-8 mx-[6vh]">
-    <PostCard v-for="post in posts" 
-        :title="post.title" 
-        :description="post.content" 
-        :author="post.owner_username" 
+    <PostCard v-for="post in posts"
+        :title="post.title"
+        :description="post.content"
+        :author="post.owner_username"
         image="none" />
 </section>
 
