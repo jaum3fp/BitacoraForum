@@ -26,7 +26,7 @@ func Connect() (db *gorm.DB) {
 		log.Fatal(err)
 	}
 
-	db.AutoMigrate(&models.Country{}, &models.User{}, &models.Tag{}, &models.Post{})
+	db.AutoMigrate(&models.User{}, &models.Tag{}, &models.Post{})
 
 	return
 }

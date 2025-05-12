@@ -1,5 +1,6 @@
 /* GENERAT PER CHATGPT */
-INSERT INTO Users (username, password, email, name, surnames, created_at, updated_at) VALUES
+USE BitacoraForum
+INSERT INTO `Users` (username, password, email, name, surnames, created_at, updated_at) VALUES
 ('usuario1', 'hashpass1', 'user1@example.com', 'Juan', 'Pérez', NOW(), NOW()),
 ('usuario2', 'hashpass2', 'user2@example.com', 'María', 'García', NOW(), NOW()),
 ('usuario3', 'hashpass3', 'user3@example.com', 'Carlos', 'Fernández', NOW(), NOW()),
