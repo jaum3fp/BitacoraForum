@@ -10,12 +10,7 @@ interface PostData {
     owner_username: string
 }
 
-let posts = ref<PostData[]>([])
-
-onMounted(async function() {
-    const res = await PostModel.getAllPosts()
-    posts.value = await res.json()
-})
+const { data: posts } = useAsyncData('getAllPosts', async () => await PostModel.getAllPosts())
 
 </script>
 

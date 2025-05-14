@@ -11,20 +11,19 @@ const CountryModel = {
   // TODO: TIPAR CON ISO 3166-1 alpha-2
   getCountryDataByAlpha: async (alpha: string, query: string = ''): Promise<CountryData | undefined> => {
     try {
-      const country = await fetch(API.restcountries.alpha + `/${alpha}?${query}`)
-      const countyPosts = await fetch(API.bitacoraForum.posts.countCountry + alpha)
-      const countryJSON = await country.json()
-      const countyPostsJSON = await countyPosts.json()
+      const country = await $fetch<any>(`${API.restcountries.alpha}/${alpha}?${query}`)
+      const countyPosts = await $fetch<number>(`${API.bitacoraForum.posts.countCountry}${alpha}`)
+
       return {
-        name: countryJSON.name.common,
-        flagSvg: countryJSON.flags.svg,
-        posts: countyPostsJSON,
+        name: country.name.common,
+        flagSvg: country.flags.svg,
+        posts: countyPosts || 0,
       }
     } catch (error) {
-      console.error("No se ha podido obtener la información del país")
+      console.error("No se ha podido obtener la información del país:", error)
+      return undefined
     }
   }
-
 } as const
 
 type ICountryModel = typeof CountryModel
