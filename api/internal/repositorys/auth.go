@@ -1,7 +1,10 @@
 package repositorys
 
 import (
+	"fmt"
+
 	token "github.com/jaum3fp/bitacora-forum/internal/auth"
+	"github.com/jaum3fp/bitacora-forum/internal/dtos"
 	"github.com/jaum3fp/bitacora-forum/internal/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -9,7 +12,7 @@ import (
 
 type AuthRepository interface {
 	Login(username string, password string) (string, error)
-	Register(username string, password string) (string, error)
+	Register(user dtos.UserDTO) (string, error)
 }
 
 type authRepo struct {
@@ -32,13 +35,7 @@ func (a *authRepo) Login(username string, password string) (string, error) {
 		return "", err
 	}
 
-	tkn, err := token.GenerateUserToken(models.User{
-		Username: user.Username,
-		Password: user.Password,
-		Email:    user.Email,
-		Name:     user.Name,
-		Surnames: user.Surnames,
-	})
+	tkn, err := token.GenerateUserToken(getUserModel(user))
 	if err != nil {
 		return "", err
 	}
@@ -46,22 +43,49 @@ func (a *authRepo) Login(username string, password string) (string, error) {
 	return tkn, nil
 }
 
-func (a *authRepo) Register(username string, password string) (string, error) {
+func (a *authRepo) Register(user dtos.UserDTO) (string, error) {
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return "", err
 	}
 
-	user := &models.User{
-		Username: username,
+	newUser := &models.User{
+		Username: user.Username,
 		Password: string(hashedPassword),
+		Email: user.Email,
+		Name: user.Name,
+		Surnames: user.Surnames,
 	}
 
-	res := a.db.Create(&user)
+	res := a.db.Create(newUser)
 	if res.Error != nil {
 		return "", res.Error
 	}
 
-	return user.Username, nil
+	fmt.Println(newUser)
+
+	tkn, err := token.GenerateUserToken(*newUser)
+	if err != nil {
+		return "", err
+	}
+
+	return tkn, nil
+}
+
+func getUserModel(user dtos.UserDTO) (model models.User) {
+	model = models.User{
+		Username: user.Username,
+		Password: user.Password,
+		Email:    user.Email,
+		Name:     user.Name,
+		Surnames: user.Surnames,
+	}
+	return
+}
+
+func getUserToken(user dtos.UserDTO) (tkn string, err error) {
+	userModel := getUserModel(user)
+	tkn, err = token.GenerateUserToken(userModel)
+	return
 }

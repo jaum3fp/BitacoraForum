@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/jaum3fp/bitacora-forum/internal/controllers"
+	"github.com/jaum3fp/bitacora-forum/internal/middleware"
 	"github.com/jaum3fp/bitacora-forum/internal/repositorys"
 )
 
@@ -12,7 +13,7 @@ func setPostRoutes(router fiber.Router, repo repositorys.PostRepository) {
 
 	group := router.Group("/post")
 
-	group.Get("/all", postHandler.GetAllPosts)
+	group.Get("/all", middleware.Protected(), postHandler.GetAllPosts)
 	group.Post("/", postHandler.CreatePost)
 
 	group.Get("/:id", postHandler.GetPost)

@@ -9,5 +9,4 @@ type UserDTO struct {
 	Email     string    `json:"email"`
 	Name      string    `json:"name"`
 	Surnames  string    `json:"surnames"`
-	Posts     []PostDTO `json:"posts"`
 }
