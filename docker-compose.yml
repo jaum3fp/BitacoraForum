@@ -8,7 +8,7 @@ services:
 
   db:
     container_name: mysql-db
-    image: mysql:5.7
+    image: mysql:latest
     restart: always
     ports:
       - 3306:3306
@@ -46,7 +46,7 @@ services:
       - api
     networks:
       bitacora_forum_network:
-        ipv4_address: 172.21.0.13    
+        ipv4_address: 172.21.0.13
 
   phpmyadmin:
     container_name: phpmyadmin
