@@ -4,13 +4,12 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  modules: ['nuxt-svgo', '@nuxt/ui'],
+  modules: ['nuxt-svgo', '@nuxt/ui', '@nuxt/content', '@pinia/nuxt'],
 
   css: ['~/assets/css/global.css', '~/assets/css/tailwind.css'],
 
   svgo: {
     autoImportPath: '@/assets/svg',
-    global: false,
     defaultImport: 'component',
     svgo: false
   },
