@@ -11,7 +11,7 @@ const props = defineProps<{
     image: string,
 }>()
 
-const { data: flag } = useAsyncData('flag', async () => await CountryModel.getCountryFlag(props.country_alpha))
+const { data: flag } = useAsyncData('flag' + props.country_alpha, async () => await CountryModel.getCountryFlag(props.country_alpha))
 
 </script>
 
