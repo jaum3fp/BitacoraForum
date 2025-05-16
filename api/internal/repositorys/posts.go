@@ -12,7 +12,8 @@ type PostRepository interface {
 	GetPost(id string) (dtos.PostDTO, error)
 	CreatePost(post models.Post) error
 	UpdatePost(id string, post models.Post) error
-	GetCountryPosts(flag string) (int64, error)
+	GetCountryPosts(flag string) ([]dtos.PostDTO, error)
+	GetCountryPostsNumber(flag string) (int64, error)
 	DeletePost(id string) error
 	IncrementPostViews(id string) error
 	GetPostsByTag(id string) ([]dtos.PostDTO, error)
@@ -26,7 +27,21 @@ func NewPostRepository(db *gorm.DB) PostRepository {
 	return &postRepo{db}
 }
 
-func (r *postRepo) GetCountryPosts(flag string) (int64, error) {
+func (r *postRepo) GetCountryPosts(flag string) ([]dtos.PostDTO, error) {
+	var posts []dtos.PostDTO
+	if err := r.db.Model(&models.Post{}).
+		Select("posts.*, users.username AS owner_username").
+		Joins("JOIN users ON posts.owner_id = users.id").
+		Where("posts.country_alpha = ?", flag).
+		Find(&posts).Error; err != nil {
+
+		return posts, err
+	}
+
+	return posts, nil
+}
+
+func (r *postRepo) GetCountryPostsNumber(flag string) (int64, error) {
 	var posts int64
 	if err := r.db.Model(&models.Post{}).
 		Where("country_alpha = ?", flag).

@@ -15,16 +15,6 @@ func NewPostHandler(postRepo repositorys.PostRepository) *PostController {
 	return &PostController{postRepo}
 }
 
-func (h *PostController) GetCountryPosts(c *fiber.Ctx) error {
-	flag := c.Params("flag")
-	posts, err := h.PostRepo.GetCountryPosts(flag)
-
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
-	}
-
-	return c.JSON(posts)
-}
 
 func (h *PostController) GetAllPosts(c *fiber.Ctx) error {
 
@@ -35,6 +25,28 @@ func (h *PostController) GetAllPosts(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(data)
+}
+
+func (h *PostController) GetCountryPosts(c *fiber.Ctx) error {
+	flag := c.Params("cc")
+	posts, err := h.PostRepo.GetCountryPosts(flag)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(posts)
+}
+
+func (h *PostController) GetCountryPostsNumber(c *fiber.Ctx) error {
+	flag := c.Params("flag")
+	posts, err := h.PostRepo.GetCountryPostsNumber(flag)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(posts)
 }
 
 func (h *PostController) CreatePost(c *fiber.Ctx) error {
