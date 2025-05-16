@@ -23,7 +23,21 @@ const CountryModel = {
       console.error("No se ha podido obtener la información del país:", error)
       return undefined
     }
+  },
+
+  getCountryFlag: async (alpha: string): Promise<{ flagSvg: string } | undefined> => {
+    try {
+      const country = await $fetch<any>(`${API.restcountries.alpha}/${alpha}?fields=flags`)
+
+      return {
+        flagSvg: country.flags.svg,
+      }
+    } catch (error) {
+      console.error("No se ha podido obtener la información del país:", error)
+      return undefined
+    }
   }
+
 } as const
 
 type ICountryModel = typeof CountryModel

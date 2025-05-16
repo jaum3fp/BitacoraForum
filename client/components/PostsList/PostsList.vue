@@ -4,13 +4,17 @@ import PostCard from './PostCard.vue';
 import { API } from '~/consts';
 import { PostModel } from '~/models/post';
 
+const props = defineProps<{
+  country?: string
+}>()
+
 interface PostData {
     title: string
     content: string
     owner_username: string
 }
 
-const { data: posts } = useAsyncData('getAllPosts', async () => await PostModel.getAllPosts())
+const { data: posts } = useAsyncData('getAllPosts', async () => await PostModel.getAllPosts(props.country && props.country))
 
 </script>
 
@@ -21,20 +25,9 @@ const { data: posts } = useAsyncData('getAllPosts', async () => await PostModel.
     <PostCard v-for="post in posts"
         :title="post.title"
         :description="post.content"
+        :country_alpha="post.country_alpha"
         :author="post.owner_username"
         image="none" />
 </section>
 
 </template>
-
-
-<style scoped>
-/*
-.posts-container {
-    display: flex;
-    flex-direction: column;
-    gap: 3vh;
-    margin: 6vh;
-}*/
-
-</style>

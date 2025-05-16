@@ -3,9 +3,9 @@ import { API } from "~/consts"
 
 const PostModel = {
 
-    getAllPosts: async (): Promise<any | undefined> => {
+    getAllPosts: async (country?: string): Promise<any | undefined> => {
       try {
-        const posts = await $fetch(API.bitacoraForum.posts.all, {
+        const posts = await $fetch(API.bitacoraForum.posts.all + (country ? '/' + country : ''), {
           headers: { 'Authorization': 'Bearer' + useUserStore().accessCookie }
         })
 
