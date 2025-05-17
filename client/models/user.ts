@@ -17,7 +17,7 @@ const UserModel = {
 
   register: async (formData: UserRegisterData): Promise<boolean> => {
     try {
-      const response: { token: string } = await $fetch(API.bitacoraForum.auth.register, {
+      const response = await useApiCall("bitacoraForum", "auth/register", {
         method: "POST",
         body: formData,
       })
@@ -31,7 +31,7 @@ const UserModel = {
 
   login: async (formData: any): Promise<boolean> => {
     try {
-      const response: { token: string } = await $fetch(API.bitacoraForum.auth.login, {
+      const response = await useApiCall("bitacoraForum", "auth/login", {
         method: "POST",
         body: formData,
       })
@@ -44,7 +44,6 @@ const UserModel = {
   },
 
   logout: async () => {
-    console.info('logout')
     useUserStore().reset()
   }
 

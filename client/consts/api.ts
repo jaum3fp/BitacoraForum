@@ -1,17 +1,14 @@
 export const API = {
   restcountries: {
-    base: 'https://restcountries.com/v3.1',
-    alpha: 'https://restcountries.com/v3.1/alpha'
+    ssr: {
+      base: 'https://restcountries.com/v3.1/',
+    },
+    base: 'https://restcountries.com/v3.1/',
   },
   bitacoraForum: {
-    base: 'http://127.21.0.11:8080/api/v1',
-    auth: {
-      register: 'http://127.21.0.11:8080/api/v1/auth/register',
-      login: 'http://127.21.0.11:8080/api/v1/auth/login',
+    ssr: {
+      base: 'http://fiber-api:8080/api/v1/',
     },
-    posts: {
-      all: 'http://127.21.0.11:8080/api/v1/post/all',
-      countCountry: 'http://127.21.0.11:8080/api/v1/post/count/',
-    }
+    base: 'http://localhost:8080/api/v1/',
   },
 }
