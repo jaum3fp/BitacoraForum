@@ -13,6 +13,7 @@ func Protected() fiber.Handler {
 			Key:    token.GetPublicKey(),
 			JWTAlg: jwtware.RS256,
 		},
+		TokenLookup: "cookie:access-token",
 		ErrorHandler: jwtError,
 	})
 }

@@ -21,8 +21,7 @@ const UserModel = {
         method: "POST",
         body: formData,
       })
-      useUserStore().setJWTData(response.token)
-      return useUserStore().successLogin
+      return response.success
     } catch (error) {
       console.error("No se ha podido registrar el usuario")
       return false
@@ -35,16 +34,37 @@ const UserModel = {
         method: "POST",
         body: formData,
       })
-      useUserStore().setJWTData(response.token)
-      return useUserStore().successLogin
+      return response.success
     } catch (error) {
       console.error("No se ha podido iniciar sesión")
       return false
     }
   },
 
-  logout: async () => {
-    useUserStore().reset()
+  logout: async (): Promise<boolean> => {
+    try {
+      const response = await useApiCall("bitacoraForum", "auth/logout", {
+        method: "POST",
+      })
+      console.info(response)
+      return response.success
+    } catch (error) {
+      console.error("No se ha podido cerrar sesión")
+      return false
+    }
+  },
+
+  getUserData: async (): Promise<UserModelType | null> => {
+    try {
+      const response = await useApiCall("bitacoraForum", "user/me", {
+        method: "POST",
+      })
+      console.info(response)
+      return response
+    } catch (error) {
+      console.error("No se ha podido obtener el usuario")
+      return null
+    }
   }
 
 } as const

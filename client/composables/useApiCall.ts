@@ -7,11 +7,21 @@ export async function useApiCall(
   opts: any = {})
 {
   const { ssrContext } = useNuxtApp()
-  const request = ssrContext ?
-    API[target].ssr.base + url :
-    API[target].base + url
   try {
-    const data = await $fetch<any>(request, opts)
+
+    const defaultOptions: any = {
+      baseURL: API[target],
+    }
+
+    if (target === "bitacoraForum") {
+      defaultOptions.credentials = 'include'
+      if (ssrContext) {
+        const headers = useRequestHeaders(['cookie'])
+        if (headers.cookie) defaultOptions.headers = { cookie: headers.cookie }
+      }
+    }
+
+    const data = await $fetch<any>(url, { ...defaultOptions, ...opts })
     return data
   } catch (error) {
     console.error("Error obteniendo los datos:", error)

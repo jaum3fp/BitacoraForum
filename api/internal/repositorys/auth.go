@@ -76,7 +76,6 @@ func (a *authRepo) Register(user dtos.UserDTO) (string, error) {
 func getUserModel(user dtos.UserDTO) (model models.User) {
 	model = models.User{
 		Username: user.Username,
-		Password: user.Password,
 		Email:    user.Email,
 		Name:     user.Name,
 		Surnames: user.Surnames,
