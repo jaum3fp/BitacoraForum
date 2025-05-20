@@ -24,6 +24,6 @@ export async function useApiCall(
     const data = await $fetch<any>(url, { ...defaultOptions, ...opts })
     return data
   } catch (error) {
-    console.error("Error obteniendo los datos:", error)
+    throw Error("Error obteniendo los datos: " + error)
   }
 }

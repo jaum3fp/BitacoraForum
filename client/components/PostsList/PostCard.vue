@@ -8,10 +8,9 @@ const props = defineProps<{
     description: string,
     country_alpha: string,
     author: string,
-    image: string,
+    flag: string,
 }>()
 
-const { data: flag } = useAsyncData('flag' + props.country_alpha, async () => await CountryModel.getCountryFlag(props.country_alpha))
 
 </script>
 
@@ -20,7 +19,7 @@ const { data: flag } = useAsyncData('flag' + props.country_alpha, async () => aw
 
 <div class="post-card flex h-40 border border-white p-2 items-center gap-4">
     <div class="post-card-header h-full flex items-center justify-center overflow-hidden">
-        <img class="h-full rounded" :src="flag?.flagSvg" alt="Flag" />
+        <img class="h-full rounded" :src="flag" alt="Flag" />
     </div>
     <div class="post-card-content flex flex-col justify-between h-full w-full overflow-hidden">
         <div class="post-body">

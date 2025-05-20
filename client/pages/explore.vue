@@ -2,19 +2,27 @@
 import Worldmap from '../components/Worldmap/Worldmap.vue';
 import CountryCard from '../components/Worldmap/CountryCard.vue';
 import { ref } from 'vue';
+import { CountryModel } from '~/models/country';
+import type { CountryModelType } from '~/models/country';
 
 
+const countriesStore = useCountriesStore()
 const cardCountry = ref<string | null>(null)
 const showCountryPosts = reactive<{ country: string, show: boolean }>({
   country: '',
   show: false,
 })
+const mapCoords = ref({ x: -1, y: -1 })
 
 defineShortcuts({
   o: () => showCountryPosts.show = !showCountryPosts.show
 })
 
-const mapCoords = ref({ x: -1, y: -1 })
+const currentCountry = computed(() => {
+  const cc = cardCountry.value
+  if (!cc) return null
+  return countriesStore.getCountryByAlpha(cc.toUpperCase())
+})
 
 function onClickCountry(event: MouseEvent, cc: string) {
   cardCountry.value = null
@@ -28,6 +36,12 @@ function onMouseoverCountry(event: MouseEvent, cc: string) {
     cardCountry.value = cc
 }
 
+useAsyncData(
+  'countriesData',
+  async () => countriesStore.countries = await CountryModel.getCountriesData(),
+  { server: false }
+)
+
 </script>
 
 
@@ -40,8 +54,10 @@ function onMouseoverCountry(event: MouseEvent, cc: string) {
         @mouseover-country="onMouseoverCountry"
     />
 
-    <CountryCard v-if="cardCountry"
-        :country="cardCountry"
+    <CountryCard v-if="currentCountry && cardCountry"
+        :cc="cardCountry"
+        :name="currentCountry.name"
+        :flag="currentCountry.flagSvg"
         :style="{ top: `${mapCoords.y}px`, left: `${mapCoords.x}px` }"
         class="absolute"
     />
