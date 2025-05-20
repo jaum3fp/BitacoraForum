@@ -29,6 +29,7 @@ services:
       - ./conf/api.env
     volumes:
       - ./api/:/go/src/app
+      - ./certs/api:/certs:ro
     depends_on:
       - db
     networks:
@@ -40,8 +41,13 @@ services:
     build: ./client/
     ports:
       - '3000:3000'
+    env_file:
+      - ./conf/client.env
     volumes:
-      - './client:/opt/app'
+      - ./client:/opt/app
+      - ./certs/client:/certs:ro
+    extra_hosts:
+      - "api.bitacoraforum.es:172.21.0.12"
     depends_on:
       - api
     networks:

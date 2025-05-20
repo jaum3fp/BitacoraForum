@@ -4,7 +4,22 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  modules: ['nuxt-svgo', '@nuxt/ui', '@nuxt/content', '@pinia/nuxt'],
+  devServer: {
+    port: 3000,
+    host: 'localhost',
+    https: {
+      key: '/certs/nuxt-app-key.pem',
+      cert: '/certs/nuxt-app.pem',
+    }
+  },
+
+  modules: [
+    'nuxt-svgo',
+    '@nuxt/ui',
+    '@nuxt/content',
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt'
+  ],
 
   css: ['~/assets/css/global.css', '~/assets/css/tailwind.css'],
 

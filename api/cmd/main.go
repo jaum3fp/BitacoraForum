@@ -28,15 +28,18 @@ func main() {
 		},
 	})
 
-	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "https://127.0.0.1:3000,https://nuxt-client:3000,https://localhost:3000,https://bitacoraforum.es:3000",
+		AllowCredentials: true,
+	}))
 	app.Use(logger.New())
 
 	router := app.Group("/api/v1")
 	routes.SetUpRoutes(router, db)
 
-	app.Get("/", func(c *fiber.Ctx) error {
+	app.Get("/health", func (c *fiber.Ctx) error {
 		return c.SendString("Hello World!")
 	})
 
-	log.Fatal(app.Listen(":8080"))
+	log.Fatal(app.ListenTLS(":8080", "/certs/fiber-api.pem", "/certs/fiber-api-key.pem"))
 }
