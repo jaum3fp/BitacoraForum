@@ -13,6 +13,7 @@ type UserRegisterData = UserModelType & {
   repeatPassword: string;
 }
 
+
 const UserModel = {
 
   register: async (formData: UserRegisterData): Promise<boolean> => {
@@ -21,6 +22,14 @@ const UserModel = {
         method: "POST",
         body: formData,
       })
+
+      if (response.success) {
+        useUserStore().user = await UserModel.getOwnData()
+        if (!useUserStore().user) {
+          return false
+        }
+      }
+
       return response.success
     } catch (error) {
       console.error("No se ha podido registrar el usuario")
@@ -34,6 +43,14 @@ const UserModel = {
         method: "POST",
         body: formData,
       })
+
+      if (response.success) {
+        useUserStore().user = await UserModel.getOwnData()
+        if (!useUserStore().user) {
+          return false
+        }
+      }
+
       return response.success
     } catch (error) {
       console.error("No se ha podido iniciar sesión")
@@ -46,7 +63,14 @@ const UserModel = {
       const response = await useApiCall("bitacoraForum", "auth/logout", {
         method: "POST",
       })
-      console.info(response)
+
+      if (response.success) {
+        useUserStore().$reset()
+        if (useUserStore().user) {
+          return false
+        }
+      }
+
       return response.success
     } catch (error) {
       console.error("No se ha podido cerrar sesión")
@@ -54,10 +78,10 @@ const UserModel = {
     }
   },
 
-  getUserData: async (): Promise<UserModelType | null> => {
+  getOwnData: async (): Promise<UserModelType | null> => {
     try {
       const response = await useApiCall("bitacoraForum", "user/me", {
-        method: "POST",
+        method: "GET",
       })
       console.info(response)
       return response

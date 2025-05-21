@@ -34,7 +34,10 @@ func (u *userRepo) GetAllUsers() ([]dtos.UserDTO, error) {
 func (u *userRepo) GetUser(username string) (dtos.UserDTO, error) {
 	var user dtos.UserDTO
 
-	if err := u.db.Model(&models.User{}).Where("username = ?", username).First(&user).Error; err != nil {
+	if err := u.db.Model(&models.User{}).
+		Where("username = ?", username).
+		First(&user).Error; err != nil {
+
 		return user, err
 	}
 

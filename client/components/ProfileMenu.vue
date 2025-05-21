@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { UserModel } from '~/models/user';
 import type { DropdownMenuItem } from '@nuxt/ui'
-import SlideoverFormLayout from './Forms/Layouts/SlideoverFormLayout.vue';
 import UserProfileForm from './Forms/UserProfileForm.vue';
 
 
@@ -12,9 +11,6 @@ const showProfile = ref(false)
 
 const onSelectLogout = async () => {
   const success = await UserModel.logout()
-  if (success) {
-    userStore.$reset()
-  }
 }
 
 const items: DropdownMenuItem[][] = [

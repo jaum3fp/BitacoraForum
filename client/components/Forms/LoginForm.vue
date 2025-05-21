@@ -20,12 +20,6 @@ const state = reactive<Partial<Schema>>({})
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   const success: boolean = await UserModel.login(event.data)
   if (success) {
-    useUserStore().user = {
-      email: '',
-      name: '',
-      surnames: '',
-      username: ''
-    }
     await navigateTo('/')
   }
 }

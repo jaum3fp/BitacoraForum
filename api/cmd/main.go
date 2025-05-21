@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -29,7 +30,12 @@ func main() {
 	})
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "https://127.0.0.1:3000,https://nuxt-client:3000,https://localhost:3000,https://bitacoraforum.es:3000",
+		AllowOrigins: strings.Join([]string{
+			"https://127.0.0.1:3000",
+			"https://nuxt-client:3000",
+			"https://localhost:3000",
+			"https://bitacoraforum.es:3000",
+		}, ","),
 		AllowCredentials: true,
 	}))
 	app.Use(logger.New())

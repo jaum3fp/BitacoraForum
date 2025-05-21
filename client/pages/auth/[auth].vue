@@ -2,10 +2,6 @@
 import LoginForm from '~/components/Forms/LoginForm.vue'
 import RegisterForm from '~/components/Forms/RegisterForm.vue'
 
-if (useUserStore().accessCookie) {
-  await navigateTo('/')
-}
-
 definePageMeta({
     layout: 'center',
 })
