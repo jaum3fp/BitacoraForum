@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { CountryModelType } from "~/models/country";
+import { CountryModel, type CountryModelType } from "~/models/country";
 
 
 interface CountriesState {
@@ -13,6 +13,14 @@ export const useCountriesStore = defineStore('countries', {
   getters: {
     getCountryByAlpha: (state: CountriesState) => {
       return (alpha: string) => state.countries[alpha]
+    },
+    getAlphaByName: (state: CountriesState) => {
+      return (name: string) => Object.keys(state.countries).find(key => state.countries[key].name.toLowerCase() === name.toLowerCase())
+    }
+  },
+  actions: {
+    async load() {
+      this.countries = await CountryModel.getCountriesData()
     }
   }
 })
