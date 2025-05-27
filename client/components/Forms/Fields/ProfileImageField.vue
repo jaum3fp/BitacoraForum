@@ -18,10 +18,11 @@ const onFileChange = (event: Event) => {
     reader.readAsDataURL(file)
   }
 }
+watchEffect(() => console.log(modelValue.value))
 </script>
 
 <template>
-  <div class="relative w-[120px] group cursor-pointer">
+  <div class="relative w-[120px] h-[120px] group cursor-pointer">
 
     <UAvatar :src="modelValue || defaultImage"  class="w-full h-full rounded-full">
       <template #fallback>
