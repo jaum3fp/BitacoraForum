@@ -36,12 +36,6 @@ function onMouseoverCountry(event: MouseEvent, cc: string) {
     cardCountry.value = cc
 }
 
-useAsyncData(
-  'countriesData',
-  async () => countriesStore.countries = await CountryModel.getCountriesData(),
-  { server: false }
-)
-
 </script>
 
 
@@ -68,7 +62,7 @@ useAsyncData(
           :ui="{ content: 'w-[60%] max-w-none', }"
         >
         <template #body>
-            <PostsList :country="showCountryPosts.country" />
+            <PostsList :filter="{ cc: showCountryPosts.country }" />
         </template>
     </USlideover>
 </div>
