@@ -6,6 +6,7 @@ type UserModelType = {
   email: string;
   name: string | null;
   surnames: string | null;
+  profile_img: string | null;
 }
 
 type UserRegisterData = UserModelType & {
@@ -107,7 +108,7 @@ const UserModel = {
 
   updateUserData: async (username: string, data: any): Promise<any | null> => {
     try {
-      const response = await useApiCall("bitacoraForum", ("user/" + username), {
+      const response = await useApiCall("bitacoraForum", ("user/me"), {
         method: "PUT",
         body: data,
       })

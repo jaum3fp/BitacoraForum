@@ -14,11 +14,13 @@ func setUserRoutes(router fiber.Router, repo repositorys.UserRepository) {
 	group := router.Group("/user")
 
 	group.Get("/all", userHandler.GetAllUsers)
-	group.Post("/", userHandler.CreateUser)
-
 	group.Get("/me", middleware.Protected(), userHandler.GetUserOwner)
-	group.Put("/:id", middleware.Protected(), userHandler.UpdateUser)
-	group.Delete("/:id", middleware.Protected(), userHandler.DeleteUser)
+	group.Get("/:username", userHandler.GetUser)
+
+	//group.Patch("/me/:field", nil)
+	group.Post("/", userHandler.CreateUser)
+	group.Put("/me", middleware.Protected(), userHandler.UpdateUser)
+	group.Delete("/me", middleware.Protected(), userHandler.DeleteUser)
 
 	//group.Patch("/ban/:id", userHandler.BanUser)
 }

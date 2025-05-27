@@ -62,7 +62,7 @@ watch(modelValue, () => emit('close'))
                         <ProfileImageField v-model="state.profile_img" />
                     </UFormField>
                     <UFormField label="Username" name="username" class="w-full">
-                        <UInput v-model="state.username" class="w-full" />
+                        <UInput disabled v-model="state.username" class="w-full" />
                     </UFormField>
                 </div>
 

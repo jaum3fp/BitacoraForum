@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { API } from '~/consts'
 
 const modelValue = defineModel<string | null | undefined>()
 
-const defaultImage = 'https://github.com/benjamincanac.png'
 const fileInput = ref<HTMLInputElement | null>(null)
 
 const triggerFileInput = () => fileInput.value?.click()
@@ -18,13 +18,25 @@ const onFileChange = (event: Event) => {
     reader.readAsDataURL(file)
   }
 }
-watchEffect(() => console.log(modelValue.value))
+
+const avatarImageUrl = computed(() => {
+  if (modelValue.value) {
+    if (modelValue.value.includes(useUserStore().user?.username + ".")) {
+      return API.bitacoraForumAvatars + modelValue.value
+    } else {
+      return modelValue.value
+    }
+  } else {
+    return 'https://github.com/benjamincanac.png'
+  }
+})
+
 </script>
 
 <template>
   <div class="relative w-[120px] h-[120px] group cursor-pointer">
 
-    <UAvatar :src="modelValue || defaultImage"  class="w-full h-full rounded-full">
+    <UAvatar :src="avatarImageUrl"  class="w-full h-full rounded-full">
       <template #fallback>
         <span class="w-full h-full flex items-center justify-center bg-gray-400 text-white text-sm font-medium rounded-full">
           JD

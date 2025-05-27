@@ -50,20 +50,22 @@ func (h *UserController) GetUserOwner(c *fiber.Ctx) error {
 		data.Password = ""
 	}
 
-	return c.JSON(dtos.UserWithourPasswordDTO{
-		ID: data.ID,
-		CreatedAt: data.CreatedAt,
-		UpdatedAt: data.UpdatedAt,
-		Username: data.Username,
-		Email: data.Email,
-		Name: data.Name,
-		Surnames: data.Surnames,
-		ProfileImage: data.ProfileImage,
-	})
+	return c.JSON(data.ParseWithoutPassword())
 }
 
 func (h *UserController) GetUser(c *fiber.Ctx) error {
-	return nil
+	username := c.Params("username")
+	data, err := h.UserRepo.GetUser(username)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	if data.Password != "" {
+		data.Password = ""
+	}
+
+	return c.JSON(data.ParseWithoutPassword())
 }
 
 func (h *UserController) CreateUser(c *fiber.Ctx) error {
@@ -71,7 +73,29 @@ func (h *UserController) CreateUser(c *fiber.Ctx) error {
 }
 
 func (h *UserController) UpdateUser(c *fiber.Ctx) error {
-	return nil
+	aTkn := c.Cookies("access-token")
+	if aTkn == "" {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Unautorized"})
+	}
+	userLocal := c.Locals("user").(*jwt.Token)
+	claims := userLocal.Claims.(jwt.MapClaims)
+	username, ok := claims["username"].(string)
+
+	if !ok {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Values not found"})
+	}
+
+	var user dtos.UserWithourPasswordDTO
+	if err := c.BodyParser(&user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Parse fail",
+		})
+	}
+	if err := h.UserRepo.UpdateUser(username, user); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(user.ID)
 }
 
 func (h *UserController) DeleteUser(c *fiber.Ctx) error {

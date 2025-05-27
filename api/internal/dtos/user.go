@@ -1,5 +1,7 @@
 package dtos
 
+import "github.com/jaum3fp/bitacora-forum/internal/models"
+
 type UserDTO struct {
 	ID        		uint  	`json:"id"`
 	CreatedAt 		string	`json:"created_at"`
@@ -21,4 +23,27 @@ type UserWithourPasswordDTO struct {
 	Name      		string	`json:"name"`
 	Surnames  		string	`json:"surnames"`
 	ProfileImage	string	`json:"profile_img"`
+}
+
+func (u *UserDTO) ParseWithoutPassword() UserWithourPasswordDTO {
+	return UserWithourPasswordDTO{
+		ID: u.ID,
+		CreatedAt: u.CreatedAt,
+		UpdatedAt: u.UpdatedAt,
+		Username: u.Username,
+		Email: u.Email,
+		Name: u.Name,
+		Surnames: u.Surnames,
+		ProfileImage: u.ProfileImage,
+	}
+}
+
+func (u *UserDTO) ParseToModel() *models.User {
+	return &models.User{
+		Username: u.Username,
+		Password: u.Password,
+		Email: u.Email,
+		Name: u.Name,
+		Surnames: u.Surnames,
+	}
 }

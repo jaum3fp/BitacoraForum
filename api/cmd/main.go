@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"strings"
+	"os"
+	"path"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -42,6 +44,9 @@ func main() {
 
 	router := app.Group("/api/v1")
 	routes.SetUpRoutes(router, db)
+
+	dir, _ := os.Getwd()
+	app.Static("/static", path.Join(dir, "internal/static"))
 
 	app.Get("/health", func (c *fiber.Ctx) error {
 		return c.SendString("Hello World!")

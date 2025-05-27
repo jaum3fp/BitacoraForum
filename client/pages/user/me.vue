@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ProfileImageField from '~/components/Forms/Fields/ProfileImageField.vue';
 import UserProfileForm from '~/components/Forms/UserProfileForm.vue';
+import { API } from '~/consts';
 import { UserModel, type UserModelType } from '~/models/user';
 
 
@@ -24,6 +25,8 @@ const onFormClose = () => {
 
 watch(pimg, async () => await UserModel.updateUserData("profile_image", pimg.value))
 
+const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForumAvatars + user.value.profile_img : 'https://github.com/benjamincanac.png')
+
 </script>
 
 <template>
@@ -31,7 +34,7 @@ watch(pimg, async () => await UserModel.updateUserData("profile_image", pimg.val
 <div class="ownerProfile">
     <UserProfileLayout v-if="user">
         <template #avatar>
-            <UAvatar src="https://github.com/benjamincanac.png" class="w-[220px] h-[220px]" />
+            <UAvatar :src="avatarImageUrl" class="w-[220px] h-[220px]" />
         </template>
         <template #user-data>
             <div class="w-full h-full flex items-center">

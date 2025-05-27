@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { UserModel } from '~/models/user'
+import { API } from '~/consts'
 
 
 const userStore = useUserStore()
@@ -14,7 +15,7 @@ const buildItems = computed(() => {
   const items: NavigationMenuItem[][] = []
   const userItem: NavigationMenuItem = ({
     avatar: {
-      src: "https://avatars.githubusercontent.com/u/115469546?v=4"
+      src: userStore.user?.profile_img ? API.bitacoraForumAvatars + userStore.user.profile_img : 'https://avatars.githubusercontent.com/u/115469546?v=4'
     },
     label: userStore.user?.username,
     children: [
