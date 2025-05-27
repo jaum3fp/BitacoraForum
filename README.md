@@ -21,6 +21,10 @@ Once the repository has been cloned and moved to its directory, add a ``conf/`` 
 #### api.env
 ```env title=api.env
 DSN=user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local
+PRIVATE_KEY_BASE64=???
+PUBLIC_KEY_BASE64=???
+SSL_CERT=???
+SSL_KEY=???
 ```
 
 #### mysql.env
@@ -42,11 +46,9 @@ PMA_HOST=mariadb
 
 #### client.env
 ```env
-# AT THE MOMENT EMPTY
+NODE_EXTRA_CA_CERTS=???
 ```
 
-Finally, run ``docker compose up`` and you are done. Maybe the first time the api may throw an error because you have no database user. Run ``docker exec -it mysql-db sh`` and once there, access the database and add it. You can also access phpmyadmin at ``http://localhost:8005`` and add it there. Now it should work.
-
-To use the application “at its best” know that in ``api/scripts`` there are different scripts to insert false data in mysql.
+Finally, run ``docker compose up`` and you are done. Maybe the first time the api may throw an error because you have no database user. Run ``docker exec -it mysql-db sh`` and once there, access the database and add it. You can also access phpmyadmin at ``https://localhost:8005`` and add it there. Now it should work.
 
 There may be network conflicts (among others). Feel free to modify ``docker-compose.yml`` to resolve them.
