@@ -69,12 +69,26 @@ const UserModel = {
         if (useUserStore().user) {
           return false
         }
+        refreshNuxtData()
       }
 
       return response.success
     } catch (error) {
       console.error("No se ha podido cerrar sesión")
       return false
+    }
+  },
+
+  getUserData: async (username: string): Promise<UserModelType | null> => {
+    try {
+      const response = await useApiCall("bitacoraForum", ("user/" + username), {
+        method: "GET",
+      })
+      console.info(response)
+      return response
+    } catch (error) {
+      console.error("No se ha podido obtener el usuario")
+      return null
     }
   },
 
@@ -89,7 +103,21 @@ const UserModel = {
       console.error("No se ha podido obtener el usuario")
       return null
     }
-  }
+  },
+
+  updateUserData: async (username: string, data: any): Promise<any | null> => {
+    try {
+      const response = await useApiCall("bitacoraForum", ("user/" + username), {
+        method: "PUT",
+        body: data,
+      })
+      console.info(response)
+      return response
+    } catch (error) {
+      console.error("No se ha podido actualizar el usuario")
+      return null
+    }
+  },
 
 } as const
 

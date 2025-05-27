@@ -1,13 +1,22 @@
 import { useApiCall } from "~/composables/useApiCall"
 import { API } from "~/consts"
 import { CountryModel } from "./country"
+import buildQueryParams from "~/utils/queryParamsBuilder"
 
+
+interface PostsFilterType {
+  author?: string,
+  cc?: string,
+  tags?: Array<string>,
+}
 
 const PostModel = {
 
-    getAllPosts: async (country: string | null): Promise<any> => {
+    getAllPosts: async (filter: PostsFilterType): Promise<any> => {
       try {
-        const posts = await useApiCall("bitacoraForum", "post/all" + (country ? '/' + country : ''))
+        const queryParams = buildQueryParams(filter)
+        const posts = await useApiCall("bitacoraForum", "post/all" + queryParams)
+        if (posts.length <= 0) return posts
         const alphas: Set<string> = new Set(posts.map((post: any) => post.country_alpha))
         const flags: any = await CountryModel.getCountryFlags([...alphas])
         const res = posts.map((post: any) => ({ ...post, flag: flags[post.country_alpha] }))
@@ -23,4 +32,4 @@ const PostModel = {
 type IPostModel = typeof PostModel
 
 
-export { PostModel, type IPostModel }
+export { PostModel, type IPostModel, type PostsFilterType }
