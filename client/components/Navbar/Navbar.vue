@@ -5,6 +5,8 @@ import { API } from '~/consts'
 
 
 const userStore = useUserStore()
+const i18n = useI18n()
+const localePath = useLocalePath()
 
 const onSelectLogout = async () => {
   const success = await UserModel.logout()
@@ -20,17 +22,17 @@ const buildItems = computed(() => {
     label: userStore.user?.username,
     children: [
       {
-        to: '/user/me',
-        label: 'Profile',
+        to: localePath('/user/me'),
+        label: i18n.t("nav_user_profile"),
         icon: 'i-charm-id'
       },
       {
-        to: '/user/settings',
-        label: 'Settings',
+        to: localePath('/user/settings'),
+        label: i18n.t('nav_user_settings'),
         icon: 'i-charm-cog'
       },
       {
-        label: 'Logout',
+        label: i18n.t('nav_user_logout'),
         icon: 'i-charm-sign-out',
         class: 'text-red-800 fill-red',
         onSelect() { onSelectLogout() }
@@ -39,31 +41,31 @@ const buildItems = computed(() => {
   })
   const authItems: Array<NavigationMenuItem> = [
     {
-      to: '/auth/login',
+      to: localePath('/auth/login'),
       icon: 'i-charm-key',
-      label: 'Login',
+      label: i18n.t('nav_login'),
     },
     {
-      to: '/auth/register',
+      to: localePath('/auth/register'),
       icon: 'i-charm-notes',
-      label: 'Register',
+      label: i18n.t('nav_register'),
     },
   ]
   const staticItems: Array<NavigationMenuItem> = [
     {
-      to: '/',
+      to: localePath('/'),
       icon: 'i-charm-home',
-      label: 'Home',
+      label: i18n.t('nav_home'),
     },
     {
-      to: '/explore',
+      to: localePath('/explore'),
       icon: 'i-charm-map',
-      label: 'Explore',
+      label: i18n.t('nav_explore'),
     },
     {
-      to: '/rules',
+      to: localePath('/rules'),
       icon: 'i-charm-book',
-      label: 'Rules',
+      label: i18n.t('nav_rules'),
     },
   ]
   items.push([], staticItems)

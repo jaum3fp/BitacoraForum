@@ -1,0 +1,10 @@
+{
+  "nav_home": "Inicio",
+  "nav_explore": "Explorar",
+  "nav_rules": "Reglas",
+  "nav_login": "Iniciar sessión",
+  "nav_register": "Registrar",
+  "nav_user_profile": "Perfil",
+  "nav_user_settings": "Ajustes",
+  "nav_user_logout": "Cerrar sessión"
+}

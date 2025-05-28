@@ -1,0 +1,10 @@
+{
+  "nav_home": "Home",
+  "nav_explore": "Explore",
+  "nav_rules": "Rules",
+  "nav_login": "Login",
+  "nav_register": "Register",
+  "nav_user_profile": "Profile",
+  "nav_user_settings": "Settings",
+  "nav_user_logout": "Logout"
+}

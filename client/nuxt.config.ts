@@ -18,7 +18,8 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/content',
     '@pinia/nuxt',
-    'pinia-plugin-persistedstate/nuxt'
+    'pinia-plugin-persistedstate/nuxt',
+    '@nuxtjs/i18n',
   ],
 
   css: ['~/assets/css/global.css', '~/assets/css/tailwind.css'],
@@ -28,4 +29,13 @@ export default defineNuxtConfig({
     defaultImport: 'component',
     svgo: false
   },
+
+  i18n: {
+    locales: [
+      { code: 'es', language: 'es-ES', name: 'Español', file: 'es.json' },
+      { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
+    ],
+    defaultLocale: 'es',
+  }
+
 })
