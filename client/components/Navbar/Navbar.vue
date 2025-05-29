@@ -2,19 +2,42 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { UserModel } from '~/models/user'
 import { API } from '~/consts'
+import type { LocaleObject } from '@nuxtjs/i18n'
 
 
 const userStore = useUserStore()
+const countriesStore = useCountriesStore()
 const i18n = useI18n()
 const localePath = useLocalePath()
+const switchLocalePath = useSwitchLocalePath()
 
 const onSelectLogout = async () => {
   const success = await UserModel.logout()
   if (success) navigateTo('/')
 }
 
+const onSelectLang = (cc: any) => {
+  navigateTo(switchLocalePath(cc))
+}
+
 const buildItems = computed(() => {
   const items: NavigationMenuItem[][] = []
+  const i18nItemChildren = i18n.locales.value.map(lang => {
+    const cc = lang.language?.split('-')[1]
+    return {
+      label: lang.name,
+      value: lang.code,
+      avatar: { src: cc ? countriesStore.getCountryByAlpha(cc.toUpperCase()).flagSvg : '' },
+      onSelect() { onSelectLang(lang.code) }
+    }
+  })
+  const i18nItem: NavigationMenuItem = ({
+    avatar: {
+      src: i18nItemChildren.find(item => item.value === i18n.locale.value)?.avatar.src
+    },
+    label: i18n.locale.value,
+    children: i18nItemChildren
+  })
   const userItem: NavigationMenuItem = ({
     avatar: {
       src: userStore.user?.profile_img ? API.bitacoraForumAvatars + userStore.user.profile_img : 'https://avatars.githubusercontent.com/u/115469546?v=4'
@@ -68,8 +91,14 @@ const buildItems = computed(() => {
       label: i18n.t('nav_rules'),
     },
   ]
+  const helpItem: NavigationMenuItem = {
+    label: 'Help',
+    icon: 'i-charm-help',
+    disabled: true
+  }
   items.push([], staticItems)
   items.push(userStore.user ? [userItem] : authItems)
+  items.push([i18nItem, helpItem])
   return items
 })
 
