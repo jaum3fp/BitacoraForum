@@ -41,6 +41,7 @@ const onSearch = async (searchVal: string) => {
     </div>
     <div class="posts-list-content">
         <PostCard v-if="posts" v-for="post in posts"
+            :id="post.id"
             :title="post.title"
             :description="post.content"
             :country_alpha="post.country_alpha"

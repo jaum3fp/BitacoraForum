@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 const props = defineProps<{
+    id: number,
     title: string,
     description: string,
     country_alpha: string,
@@ -27,7 +28,7 @@ const props = defineProps<{
     </div>
     <div class="post-card-actions flex items-start justify-center h-full px-2">
         <UChip position="bottom-right" size="3xl" :text="0">
-            <UButton icon="i-charm-messages" color="neutral" variant="outline" class="text-gray-600" />
+            <UButton icon="i-charm-messages" color="neutral" variant="outline" class="text-gray-600" @click="navigateTo('/discussions/' + id)" />
         </UChip>
     </div>
 </div>
