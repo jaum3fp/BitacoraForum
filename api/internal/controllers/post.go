@@ -18,7 +18,8 @@ func NewPostHandler(postRepo repositorys.PostRepository) *PostController {
 
 func (h *PostController) GetAllPosts(c *fiber.Ctx) error {
 
-	data, err := h.PostRepo.GetAllPosts()
+	filters := c.Queries()
+	data, err := h.PostRepo.GetAllPosts(filters)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})

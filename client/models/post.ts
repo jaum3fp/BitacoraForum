@@ -10,6 +10,17 @@ interface PostsFilterType {
   tags?: Array<string>,
 }
 
+interface PostModelType {
+  id: number,
+  created_at: Date,
+  updated_at: Date,
+  title: string,
+  content: string,
+  views: number,
+  owner_id: number,
+  country_alpha: string,
+}
+
 const PostModel = {
 
     getAllPosts: async (filter: PostsFilterType): Promise<any> => {
@@ -25,6 +36,17 @@ const PostModel = {
         console.error("No se han podido obtener todos los posts:", error)
         return []
       }
+    },
+
+    getPostById: async (id: number): Promise<any> => {
+      try {
+        const posts = await useApiCall("bitacoraForum", ("post/" + id))
+        if (posts.length <= 0) return posts
+        return posts || []
+      } catch (error) {
+        console.error("No se han podido obtener todos los posts:", error)
+        return []
+      }
     }
 
 } as const
@@ -32,4 +54,4 @@ const PostModel = {
 type IPostModel = typeof PostModel
 
 
-export { PostModel, type IPostModel, type PostsFilterType }
+export { PostModel, type IPostModel, type PostsFilterType, type PostModelType }

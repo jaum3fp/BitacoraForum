@@ -13,8 +13,8 @@ func setPostRoutes(router fiber.Router, repo repositorys.PostRepository) {
 	group := router.Group("/post")
 
 	group.Get("/all", postHandler.GetAllPosts)
-	group.Post("/", postHandler.CreatePost)
 
+	group.Post("/", postHandler.CreatePost)
 	group.Get("/:id", postHandler.GetPost)
 	group.Put("/:id", postHandler.UpdatePost)
 	group.Delete("/:id", postHandler.DeletePost)
@@ -23,5 +23,5 @@ func setPostRoutes(router fiber.Router, repo repositorys.PostRepository) {
 	group.Patch("/inc-view/:id", postHandler.IncrementPostViews)
 
 	group.Get("/count/:flag", postHandler.GetCountryPostsNumber)
-	group.Get("/all/:cc", postHandler.GetCountryPosts)
+
 }
