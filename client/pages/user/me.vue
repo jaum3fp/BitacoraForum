@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CreatePostForm from '~/components/Forms/CreatePostForm.vue';
 import ProfileImageField from '~/components/Forms/Fields/ProfileImageField.vue';
 import UserProfileForm from '~/components/Forms/UserProfileForm.vue';
 import { API } from '~/consts';
@@ -18,6 +19,7 @@ const { data: user, refresh: userRefresh } = useAsyncData('getUser', async () =>
 
 const pimg = ref("")
 const showEditForm = ref(false)
+const showCreateForm = ref(false)
 
 const onFormClose = () => {
   userRefresh()
@@ -44,10 +46,11 @@ const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForu
             </div>
         </template>
         <template #body>
-            <PostsList :filter="{ author: user.username }" />
+            <PostsList :filter="{ author: user.username }" :create="true" @click="showCreateForm = true" />
         </template>
     </UserProfileLayout>
     <UserProfileForm v-model="showEditForm" @close="onFormClose" />
+    <CreatePostForm v-model="showCreateForm" @close="onFormClose" />
 </div>
 
 </template>

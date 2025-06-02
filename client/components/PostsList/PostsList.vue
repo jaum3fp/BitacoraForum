@@ -7,10 +7,18 @@ import { CountryModel } from '~/models/country';
 import SearchBar from './SearchBar.vue';
 import { type PostsFilterType } from '~/models/post';
 import PostsFilter from './PostsFilter.vue';
+import { UButton } from '#components';
 
 
-const props = defineProps<{
-  filter?: PostsFilterType
+const props = withDefaults(defineProps<{
+  filter?: PostsFilterType,
+  create?: boolean
+}>(), {
+  create: false
+})
+
+defineEmits<{
+  (e: 'add'): void
 }>()
 
 const countryStore = useCountriesStore()
@@ -34,10 +42,11 @@ const onSearch = async (searchVal: string) => {
 <template>
 
 <div class="posts-listd-flex flex-col">
-    <div class="posts-list-header mb-4">
+    <div class="posts-list-header mb-4 flex gap-4 w-full">
         <SearchBar @search="onSearch" :filter="{
           component: PostsFilter
-        }" />
+        }" class="flex-1" />
+        <UButton v-if="props.create" icon="i-charm-plus" @click="$emit('add')">Add post</UButton>
     </div>
     <div class="posts-list-content">
         <PostCard v-if="posts" v-for="post in posts"
