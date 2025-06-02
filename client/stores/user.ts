@@ -24,5 +24,4 @@ export const useUserStore = defineStore('user', {
       this.user = await UserModel.getOwnData()
     }
   },
-  persist: true,
 })
