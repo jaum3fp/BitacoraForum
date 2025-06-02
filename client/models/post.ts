@@ -2,6 +2,7 @@ import { useApiCall } from "~/composables/useApiCall"
 import { API } from "~/consts"
 import { CountryModel } from "./country"
 import buildQueryParams from "~/utils/queryParamsBuilder"
+import { id } from "@nuxt/ui/runtime/locale/index.js"
 
 
 interface PostsFilterType {
@@ -46,6 +47,18 @@ const PostModel = {
       } catch (error) {
         console.error("No se han podido obtener todos los posts:", error)
         return []
+      }
+    },
+
+    incrementView: async (id: number): Promise<any> => {
+      try {
+        const res = await useApiCall("bitacoraForum", ("post/inc-view/" + id), {
+          method: 'PATCH'
+        })
+        return res
+      } catch (error) {
+        console.error("No se han podido obtener todos los posts:", error)
+        return null
       }
     }
 
