@@ -37,7 +37,7 @@ const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForu
             <UAvatar :src="avatarImageUrl" class="w-[220px] h-[220px]" />
         </template>
         <template #user-data>
-            <div class="w-full h-full flex items-center">
+            <div class="w-full h-full flex gap-4 items-center">
                 <UButton icon="i-charm-pencil" variant="outline" class="absolute p-3 top-0 right-0" @click="showEditForm = true" />
                 <h1 class="text-4xl font-bold">{{user.username}}'s page</h1>
                 <h1 class="text-2xl">({{user.name}} {{user.surnames}})</h1>

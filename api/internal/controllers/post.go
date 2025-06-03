@@ -97,7 +97,7 @@ func (h *PostController) DeletePost(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	return c.JSON(fiber.Map{"ID": id})
+	return c.JSON(fiber.Map{"id": id, "success": true})
 }
 
 func (h *PostController) IncrementPostViews(c *fiber.Ctx) error {

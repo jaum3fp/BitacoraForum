@@ -84,6 +84,18 @@ const PostModel = {
       }
     },
 
+    delete: async (id: number): Promise<any> => {
+      try {
+        const res = await useApiCall("bitacoraForum", ("/post/" + id), {
+          method: 'DELETE',
+        })
+        return res
+      } catch (error) {
+        console.error("No se han podido obtener todos los posts:", error)
+        return null
+      }
+    },
+
 } as const
 
 type IPostModel = typeof PostModel

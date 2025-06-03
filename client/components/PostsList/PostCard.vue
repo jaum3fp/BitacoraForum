@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { UModal } from '#components';
+import DelModal from '@/components/Modals/DelModal.vue'
+import { PostModel } from '~/models/post';
 
 const props = defineProps<{
     id: number,
@@ -8,8 +11,22 @@ const props = defineProps<{
     author: string,
     flag: string,
 }>()
-</script>
 
+const overlay = useOverlay()
+const deleteModal = overlay.create(DelModal)
+
+const openDeleteModal = async () => {
+  const deleteModalInstance = deleteModal.open()
+  const toDelete = await deleteModalInstance.result
+  if (toDelete) {
+    const res = await PostModel.delete(props.id)
+    if (res.success) {
+      refreshNuxtData()
+    }
+  }
+}
+
+</script>
 
 <template>
 
@@ -26,10 +43,13 @@ const props = defineProps<{
             By <ULink :to="'/user/' + author">{{ props.author }}</ULink>
         </div>
     </div>
-    <div class="post-card-actions flex items-start justify-center h-full px-2">
+    <div class="post-card-actions flex flex-col gap-2 items-start h-full px-2">
         <UChip position="bottom-right" size="3xl" :text="0">
             <UButton icon="i-charm-messages" color="neutral" variant="outline" class="text-gray-600" @click="navigateTo('/discussions/' + id)" />
         </UChip>
+            <UButton icon="i-charm-bin" color="neutral" variant="outline"
+            class="text-gray-600 hover:bg-red-600 transition-colors" @click="openDeleteModal" @delete="console.log('del')" />
+        <UButton icon="i-charm-pencil" color="neutral" variant="outline" class="text-gray-600" @click="navigateTo('/discussions/' + id)" />
     </div>
 </div>
 
