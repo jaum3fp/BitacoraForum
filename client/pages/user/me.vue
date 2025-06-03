@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { PostsList } from '#components';
 import CreatePostForm from '~/components/Forms/CreatePostForm.vue';
 import ProfileImageField from '~/components/Forms/Fields/ProfileImageField.vue';
 import UserProfileForm from '~/components/Forms/UserProfileForm.vue';
 import { API } from '~/consts';
 import { UserModel, type UserModelType } from '~/models/user';
+import { PostModel } from '~/models/post';
 
 
 definePageMeta({
@@ -20,10 +22,6 @@ const { data: user, refresh: userRefresh } = useAsyncData('getUser', async () =>
 const pimg = ref("")
 const showEditForm = ref(false)
 const showCreateForm = ref(false)
-
-const onFormClose = () => {
-  userRefresh()
-}
 
 watch(pimg, async () => await UserModel.updateUserData("profile_image", pimg.value))
 
@@ -46,11 +44,11 @@ const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForu
             </div>
         </template>
         <template #body>
-            <PostsList :filter="{ author: user.username }" :create="true" @click="showCreateForm = true" />
+            <PostsList :filter="{ author: user.username }" :create="true" @add="showCreateForm = true" />
         </template>
     </UserProfileLayout>
-    <UserProfileForm v-model="showEditForm" @close="onFormClose" />
-    <CreatePostForm v-model="showCreateForm" @close="onFormClose" />
+    <UserProfileForm v-model="showEditForm" @close="userRefresh()" />
+    <CreatePostForm v-model="showCreateForm" />
 </div>
 
 </template>

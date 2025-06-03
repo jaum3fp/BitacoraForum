@@ -11,8 +11,8 @@ import (
 
 type PostRepository interface {
 	GetAllPosts(filters map[string]string) ([]dtos.PostUsernameDTO, error)
-	GetPost(id string) (dtos.PostDTO, error)
-	CreatePost(post models.Post) error
+	GetPost(id string) (dtos.PostUsernameDTO, error)
+	CreatePost(post dtos.PostDTO) error
 	UpdatePost(id string, post models.Post) error
 	GetCountryPosts(flag string) ([]dtos.PostDTO, error)
 	GetCountryPostsNumber(flag string) (int64, error)
@@ -80,19 +80,29 @@ func (r *postRepo) GetAllPosts(filters map[string]string) ([]dtos.PostUsernameDT
 	return posts, nil
 }
 
-func (r *postRepo) GetPost(id string) (dtos.PostDTO, error) {
+func (r *postRepo) GetPost(id string) (dtos.PostUsernameDTO, error) {
 
-	var post dtos.PostDTO
-	if err := r.db.Model(&models.Post{}).Find(&post, id).Error; err != nil {
+	var post dtos.PostUsernameDTO
+	if err := r.db.Model(&models.Post{}).
+		Select("posts.*, users.username AS owner_username").
+		Joins("JOIN users ON posts.owner_id = users.id").
+		Find(&post, id).Error; err != nil {
+
 		return post, err
 	}
 
 	return post, nil
 }
 
-func (r *postRepo) CreatePost(post models.Post) error {
+func (r *postRepo) CreatePost(post dtos.PostDTO) error {
 
-	err := r.db.Create(&post).Error
+	err := r.db.Create(&models.Post{
+		Title: post.Title,
+		Description: post.Description,
+		Content: post.Content,
+		OwnerID: post.OwnerID,
+		CountryAlpha: post.CountryAlpha,
+	}).Error
 	return err
 }
 

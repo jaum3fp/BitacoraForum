@@ -3,7 +3,7 @@
 <template>
 
   <div class="flex w-full h-screen">
-    <aside class="w-[200px] min-h-screen flex flex-col shadow-md">
+    <aside class="w-[12%] min-h-screen flex flex-col shadow-md">
       <Navbar />
     </aside>
     <main class="text-center px-12 flex-1 overflow-y-auto">

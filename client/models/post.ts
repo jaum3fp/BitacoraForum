@@ -16,10 +16,19 @@ interface PostModelType {
   created_at: Date,
   updated_at: Date,
   title: string,
+  description: string,
   content: string,
   views: number,
   owner_id: number,
   country_alpha: string,
+}
+
+interface NewPostModel {
+  title: string,
+  description?: string,
+  content: string,
+  country_alpha: string,
+  owner_id: number,
 }
 
 const PostModel = {
@@ -60,11 +69,24 @@ const PostModel = {
         console.error("No se han podido obtener todos los posts:", error)
         return null
       }
-    }
+    },
+
+    createPost: async (newPost: NewPostModel): Promise<any> => {
+      try {
+        const res = await useApiCall("bitacoraForum", "/post/", {
+          method: 'POST',
+          body: newPost
+        })
+        return res
+      } catch (error) {
+        console.error("No se han podido obtener todos los posts:", error)
+        return null
+      }
+    },
 
 } as const
 
 type IPostModel = typeof PostModel
 
 
-export { PostModel, type IPostModel, type PostsFilterType, type PostModelType }
+export { PostModel, type IPostModel, type PostsFilterType, type PostModelType, type NewPostModel }

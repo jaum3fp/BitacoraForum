@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/gofiber/fiber/v2"
 
+	"github.com/jaum3fp/bitacora-forum/internal/dtos"
 	"github.com/jaum3fp/bitacora-forum/internal/models"
 	"github.com/jaum3fp/bitacora-forum/internal/repositorys"
 )
@@ -51,7 +52,7 @@ func (h *PostController) GetCountryPostsNumber(c *fiber.Ctx) error {
 }
 
 func (h *PostController) CreatePost(c *fiber.Ctx) error {
-	var post models.Post
+	var post dtos.PostDTO
 	if err := c.BodyParser(&post); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Post parse fail: " + err.Error(),
@@ -61,7 +62,7 @@ func (h *PostController) CreatePost(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	return c.JSON(post.ID)
+	return c.JSON(fiber.Map{"success": true, "id": post.ID})
 }
 
 func (h *PostController) GetPost(c *fiber.Ctx) error {

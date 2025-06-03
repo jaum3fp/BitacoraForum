@@ -50,22 +50,16 @@ func (a *authRepo) Register(user dtos.UserDTO) (string, error) {
 		return "", err
 	}
 
-	newUser := &models.User{
-		Username: user.Username,
-		Password: string(hashedPassword),
-		Email: user.Email,
-		Name: user.Name,
-		Surnames: user.Surnames,
+	user.Password = string(hashedPassword)
+
+	res, err := a.user.CreateUser(user)
+	if err != nil {
+		return "", err
 	}
 
-	res := a.db.Create(newUser)
-	if res.Error != nil {
-		return "", res.Error
-	}
+	fmt.Println(res)
 
-	fmt.Println(newUser)
-
-	tkn, err := token.GenerateUserToken(*newUser)
+	tkn, err := token.GenerateUserToken(*user.ParseToModel())
 	if err != nil {
 		return "", err
 	}

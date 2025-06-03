@@ -2,6 +2,7 @@ import { API } from "~/consts"
 import { useUserStore } from "../stores/user";
 
 type UserModelType = {
+  id: number;
   username: string;
   email: string;
   name: string | null;
