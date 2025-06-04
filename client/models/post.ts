@@ -54,7 +54,7 @@ const PostModel = {
         if (posts.length <= 0) return posts
         return posts || []
       } catch (error) {
-        console.error("No se han podido obtener todos los posts:", error)
+        console.error("No se han podido obtener el post:", error)
         return []
       }
     },
@@ -66,7 +66,7 @@ const PostModel = {
         })
         return res
       } catch (error) {
-        console.error("No se han podido obtener todos los posts:", error)
+        console.error("No se han podido incrementar las visitas:", error)
         return null
       }
     },
@@ -79,7 +79,7 @@ const PostModel = {
         })
         return res
       } catch (error) {
-        console.error("No se han podido obtener todos los posts:", error)
+        console.error("No se han podido crear el post:", error)
         return null
       }
     },
@@ -91,7 +91,7 @@ const PostModel = {
         })
         return res
       } catch (error) {
-        console.error("No se han podido obtener todos los posts:", error)
+        console.error("No se ha podido eliminar el post:", error)
         return null
       }
     },
