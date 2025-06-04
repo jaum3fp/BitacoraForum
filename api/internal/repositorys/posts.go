@@ -13,7 +13,7 @@ type PostRepository interface {
 	GetAllPosts(filters map[string]string) ([]dtos.PostUsernameDTO, error)
 	GetPost(id string) (dtos.PostUsernameDTO, error)
 	CreatePost(post dtos.PostDTO) error
-	UpdatePost(id string, post models.Post) error
+	UpdatePost(id string, post dtos.PostUsernameDTO) error
 	GetCountryPosts(flag string) ([]dtos.PostDTO, error)
 	GetCountryPostsNumber(flag string) (int64, error)
 	DeletePost(id string) error
@@ -106,7 +106,7 @@ func (r *postRepo) CreatePost(post dtos.PostDTO) error {
 	return err
 }
 
-func (r *postRepo) UpdatePost(id string, post models.Post) error {
+func (r *postRepo) UpdatePost(id string, post dtos.PostUsernameDTO) error {
 
 	err := r.db.Model(&models.Post{}).Where("id = ?", id).Updates(post).Error
 	return err

@@ -96,6 +96,19 @@ const PostModel = {
       }
     },
 
+    update: async (id: number, data: any): Promise<any> => {
+      try {
+        const res = await useApiCall("bitacoraForum", ("/post/" + id), {
+          method: 'PUT',
+          body: data,
+        })
+        return res
+      } catch (error) {
+        console.error("No se ha podido actualizar el post:", error)
+        return null
+      }
+    }
+
 } as const
 
 type IPostModel = typeof PostModel

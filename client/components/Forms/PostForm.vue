@@ -2,45 +2,36 @@
 import * as z from 'zod'
 import { UButton, UFormField, UInput } from '#components';
 import CountryChooser from './Fields/CountryChooser.vue';
-import { PostModel, type NewPostModel } from '@/models/post'
 
 const modelValue = defineModel<boolean>()
 
 const emit = defineEmits<{
   (e: 'close'): void
+  (e: 'submit', state: Schema): void
 }>()
-
-const userStore = useUserStore()
-
 
 const schema = z.object({
   title: z.string().min(8, 'Must be at least 8 characters'),
   description: z.string().optional(),
   content: z.string().min(25, 'Must be at least 25 characters'),
-  country: z.string().nonempty('Se debe relacionar con un país'),
+  country_alpha: z.string().nonempty('Se debe relacionar con un país'),
 })
 
 type Schema = z.output<typeof schema>
 
-const props = withDefaults(defineProps<{ initialData?: any }>(), { initialData: {} })
+const props = withDefaults(defineProps<{
+  title?: string
+  initialData?: any
+}>(), {
+  title: "Discussion form",
+  initialData: {}
+})
 
 const state = reactive<Partial<Schema>>({ ...props.initialData })
 
-async function onSubmit(resultState: Partial<Schema>) {
-  const parsed = schema.parse(resultState)
-  if (parsed && userStore.user) {
-    const res = await PostModel.createPost({
-      title: parsed.title,
-      description: parsed.description,
-      content: parsed.content,
-      country_alpha: parsed.country,
-      owner_id: userStore.user.id,
-    })
-    if (res.success) {
-      refreshNuxtData()
-      modelValue.value = false
-    }
-  }
+const handleSubmit = async (state: Partial<Schema>) => {
+  const parsed = schema.parse(state)
+  if (parsed) emit('submit', parsed)
 }
 
 watch(modelValue, () => emit('close'))
@@ -53,10 +44,10 @@ watch(modelValue, () => emit('close'))
 
     <USlideover v-model:open="modelValue" :dismissible="false" :modal="false" :ui="{ content: 'w-[88%] max-w-none', }">
         <template #title>
-            <h1 class="text-2xl font-bold">Create new discussion</h1>
+            <h1 class="text-2xl font-bold">{{ props.title }}</h1>
         </template>
         <template #footer>
-            <UButton color="primary" type="submit" :disabled="!schema.safeParse(state).success" @click="onSubmit(state)">Publicar</UButton>
+            <UButton color="primary" :disabled="!schema.safeParse(state).success" @click="handleSubmit(state)">Publicar</UButton>
             <UButton color="neutral" variant="outline" @click="modelValue = false">Cancelar</UButton>
         </template>
         <template #body>
@@ -68,7 +59,7 @@ watch(modelValue, () => emit('close'))
                     </UFormField>
 
                     <UFormField label="Country" name="country">
-                        <CountryChooser v-model="state.country" />
+                        <CountryChooser v-model="state.country_alpha" />
                     </UFormField>
                 </div>
 

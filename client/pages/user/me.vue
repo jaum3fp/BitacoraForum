@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PostsList } from '#components';
-import CreatePostForm from '~/components/Forms/CreatePostForm.vue';
+import PostForm from '~/components/Forms/PostForm.vue';
 import ProfileImageField from '~/components/Forms/Fields/ProfileImageField.vue';
 import UserProfileForm from '~/components/Forms/UserProfileForm.vue';
 import { API } from '~/consts';
@@ -27,6 +27,22 @@ watch(pimg, async () => await UserModel.updateUserData("profile_image", pimg.val
 
 const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForumAvatars + user.value.profile_img : 'https://github.com/benjamincanac.png')
 
+async function onSubmit(state: any) {
+  if (userStore.user) {
+    const res = await PostModel.createPost({
+      title: state.title,
+      description: state.description,
+      content: state.content,
+      country_alpha: state.country_alpha,
+      owner_id: userStore.user.id,
+    })
+    if (res.success) {
+      refreshNuxtData('posts' + { author: user.value?.username })
+      showCreateForm.value = false
+    }
+  }
+}
+
 </script>
 
 <template>
@@ -48,7 +64,7 @@ const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForu
         </template>
     </UserProfileLayout>
     <UserProfileForm v-model="showEditForm" @close="userRefresh()" />
-    <CreatePostForm v-model="showCreateForm" />
+    <PostForm v-model="showCreateForm" title="Create new discussion" @submit="onSubmit" />
 </div>
 
 </template>

@@ -55,7 +55,7 @@ watch(searchInput, (newVal) => {
             class="w-full"
             v-bind="$attrs"
         >
-            <template v-if="props.clearable || props.filter" #trailing>
+            <!--template v-if="props.clearable || props.filter" #trailing>
                 <UButton v-if="props.clearable && searchInput.length > 0"
                     color="neutral"
                     variant="link"
@@ -65,7 +65,7 @@ watch(searchInput, (newVal) => {
                     @click="searchInput = ''"
                 />
                 <component v-if="props.filter" :is="props.filter.component" v-bind="props.filter.args" />
-            </template>
+            </template-->
         </UInput>
     </div>
 </template>

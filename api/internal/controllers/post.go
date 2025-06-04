@@ -5,7 +5,6 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 
 	"github.com/jaum3fp/bitacora-forum/internal/dtos"
-	"github.com/jaum3fp/bitacora-forum/internal/models"
 	"github.com/jaum3fp/bitacora-forum/internal/repositorys"
 )
 
@@ -79,17 +78,41 @@ func (h *PostController) GetPost(c *fiber.Ctx) error {
 
 func (h *PostController) UpdatePost(c *fiber.Ctx) error {
 	id := c.Params("id")
-	var post models.Post
-	if err := c.BodyParser(&post); err != nil {
+
+	post, err := h.PostRepo.GetPost(id)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	var updatedPost dtos.PostUsernameDTO
+	if err := c.BodyParser(&updatedPost); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Parse fail",
 		})
 	}
-	if err := h.PostRepo.UpdatePost(id, post); err != nil {
+
+	aTkn := c.Cookies("access-token")
+	if aTkn == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unautorized"})
+	}
+	user := c.Locals("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	username, ok := claims["username"].(string)
+
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "No se ha podido identificar al usuario"})
+	}
+
+	if username != post.OwnerUsername {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "El usuario no puede realizar esta acción"})
+	}
+
+	if err := h.PostRepo.UpdatePost(id, updatedPost); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	return c.JSON(post.ID)
+	return c.JSON(fiber.Map{"id": updatedPost.ID, "success": true})
 }
 
 func (h *PostController) DeletePost(c *fiber.Ctx) error {
