@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import PostCard from './PostCard.vue';
-import { API } from '~/consts';
-import { PostModel } from '~/models/post';
-import { CountryModel } from '~/models/country';
 import SearchBar from './SearchBar.vue';
 import { type PostsFilterType } from '~/models/post';
 import PostsFilter from './PostsFilter.vue';
 import { UButton } from '#components';
-
+import DelModal from '@/components/Modals/DelModal.vue'
+import { PostModel } from '~/models/post';
 
 const props = withDefaults(defineProps<{
   filter?: PostsFilterType,
-  create?: boolean
+  mod?: boolean
 }>(), {
-  create: false
+  mod: false
 })
 
 defineEmits<{
@@ -22,6 +20,8 @@ defineEmits<{
 }>()
 
 const countryStore = useCountriesStore()
+const overlay = useOverlay()
+const deleteModal = overlay.create(DelModal)
 
 const searchFilter = ref(props.filter)
 
@@ -37,6 +37,17 @@ const onSearch = async (searchVal: string) => {
   refreshPosts()
 }
 
+const openDeleteModal = async (id: number) => {
+  const deleteModalInstance = deleteModal.open()
+  const toDelete = await deleteModalInstance.result
+  if (toDelete) {
+    const res = await PostModel.delete(id)
+    if (res.success) {
+      refreshPosts()
+    }
+  }
+}
+
 </script>
 
 <template>
@@ -46,7 +57,7 @@ const onSearch = async (searchVal: string) => {
         <SearchBar @search="onSearch" :filter="{
           component: PostsFilter
         }" class="flex-1" />
-        <UButton v-if="props.create" icon="i-charm-plus" @click="$emit('add')">Add post</UButton>
+        <UButton v-if="props.mod" icon="i-charm-plus" @click="$emit('add')">Add post</UButton>
     </div>
     <div class="posts-list-content">
         <PostCard v-if="posts" v-for="post in posts"
@@ -56,6 +67,8 @@ const onSearch = async (searchVal: string) => {
             :country_alpha="post.country_alpha"
             :author="post.owner_username"
             :flag="post.flag"
+            :mod-buttons="props.mod"
+            @delete="openDeleteModal"
             image="none" />
         <USkeleton v-else />
     </div>

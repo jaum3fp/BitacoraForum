@@ -76,10 +76,8 @@ func (u *userRepo) UpdateUser(username string, user dtos.UserWithourPasswordDTO)
 		updates["surnames"] = user.Surnames
 	}
 	if user.ProfileImage != "" {
-		println("Writing image...")
 		fileName, err := storeBase64Image(user.Username, user.ProfileImage)
 		if err != nil {
-			println(err)
 			return err
 		}
 		updates["profile_image"] = fileName

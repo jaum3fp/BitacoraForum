@@ -20,6 +20,7 @@ func Connect() (db *gorm.DB) {
 
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		//Logger: logger,
+		PrepareStmt: true,
 	})
 
 	if err != nil {

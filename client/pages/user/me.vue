@@ -44,7 +44,7 @@ const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForu
             </div>
         </template>
         <template #body>
-            <PostsList :filter="{ author: user.username }" :create="true" @add="showCreateForm = true" />
+            <PostsList :filter="{ author: user.username }" :mod="true" @add="showCreateForm = true" />
         </template>
     </UserProfileLayout>
     <UserProfileForm v-model="showEditForm" @close="userRefresh()" />

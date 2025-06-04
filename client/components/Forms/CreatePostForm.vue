@@ -22,7 +22,9 @@ const schema = z.object({
 
 type Schema = z.output<typeof schema>
 
-const state = reactive<Partial<Schema>>({})
+const props = withDefaults(defineProps<{ initialData?: any }>(), { initialData: {} })
+
+const state = reactive<Partial<Schema>>({ ...props.initialData })
 
 async function onSubmit(resultState: Partial<Schema>) {
   const parsed = schema.parse(resultState)

@@ -1,30 +1,20 @@
 <script setup lang="ts">
-import { UModal } from '#components';
-import DelModal from '@/components/Modals/DelModal.vue'
-import { PostModel } from '~/models/post';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     id: number,
     title: string,
     description: string,
     country_alpha: string,
     author: string,
     flag: string,
+    modButtons: boolean,
+}>(), {
+    modButtons: false
+})
+
+defineEmits<{
+  (e: 'delete', id: number): void
 }>()
-
-const overlay = useOverlay()
-const deleteModal = overlay.create(DelModal)
-
-const openDeleteModal = async () => {
-  const deleteModalInstance = deleteModal.open()
-  const toDelete = await deleteModalInstance.result
-  if (toDelete) {
-    const res = await PostModel.delete(props.id)
-    if (res.success) {
-      refreshNuxtData()
-    }
-  }
-}
 
 </script>
 
@@ -47,9 +37,10 @@ const openDeleteModal = async () => {
         <UChip position="bottom-right" size="3xl" :text="0">
             <UButton icon="i-charm-messages" color="neutral" variant="outline" class="text-gray-600" @click="navigateTo('/discussions/' + id)" />
         </UChip>
-            <UButton icon="i-charm-bin" color="neutral" variant="outline"
-            class="text-gray-600 hover:bg-red-600 transition-colors" @click="openDeleteModal" @delete="console.log('del')" />
-        <UButton icon="i-charm-pencil" color="neutral" variant="outline" class="text-gray-600" @click="navigateTo('/discussions/' + id)" />
+        <UButton v-if="props.modButtons" icon="i-charm-bin" color="neutral" variant="outline"
+            class="text-gray-600 hover:bg-red-600 transition-colors" @click="$emit('delete', props.id)" @delete="console.log('del')" />
+        <UButton v-if="props.modButtons" icon="i-charm-pencil" color="neutral" variant="outline"
+            class="text-gray-600" @click="navigateTo('/discussions/' + id + '/edit')" />
     </div>
 </div>
 

@@ -86,7 +86,6 @@ const UserModel = {
       const response = await useApiCall("bitacoraForum", ("user/" + username), {
         method: "GET",
       })
-      console.info(response)
       return response
     } catch (error) {
       console.error("No se ha podido obtener el usuario")
