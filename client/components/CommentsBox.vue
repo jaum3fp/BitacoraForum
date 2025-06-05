@@ -45,8 +45,16 @@ async function onSubmit(event: FormSubmitEvent<CommentState>) {
 <div class="commentbox">
     <template v-for="comment in props.comments">
         <USeparator class="my-5" />
-        <div class="commentcard p-8 mt-4 text-left rounded-lg bg-white/10 text-[var(--text-color)]">
-            {{ comment.content }}
+        <div class="commentcard">
+            <div>
+                <ULink :to="'/user/' + comment.owner_username">{{ comment.owner_username }}</ULink>
+            </div>
+            <div class="relative flex flex-col p-8 mt-4 text-left rounded-lg bg-white/10 text-[var(--text-color)] overflow-y-auto break-words">
+                <div class="absolute top-2 right-2 text-sm text-gray-600 font-mono">
+                    {{ comment.created_at.toString().replace('T', ' ').replace('Z', '') }}
+                </div>
+                {{ comment.content }}
+            </div>
         </div>
     </template>
 
