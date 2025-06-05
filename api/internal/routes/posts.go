@@ -15,7 +15,7 @@ func setPostRoutes(router fiber.Router, repo repositorys.PostRepository) {
 
 	group.Get("/all", postHandler.GetAllPosts)
 
-	group.Post("/", postHandler.CreatePost)
+	group.Post("/", middleware.Protected(), postHandler.CreatePost)
 	group.Get("/:id", postHandler.GetPost)
 	group.Put("/:id", middleware.Protected(), postHandler.UpdatePost)
 	group.Delete("/:id", middleware.Protected(), postHandler.DeletePost)
