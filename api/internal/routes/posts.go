@@ -22,7 +22,8 @@ func setPostRoutes(router fiber.Router, repo repositorys.PostRepository) {
 
 	group.Get("/tag/:id", postHandler.GetPostsByTag)
 	group.Patch("/inc-view/:id", postHandler.IncrementPostViews)
-
+	group.Get("/comments/:super", postHandler.GetPostComments)
+	group.Get("/count/comments/:super", postHandler.GetPostCommentsNumber)
 	group.Get("/count/:flag", postHandler.GetCountryPostsNumber)
 
 }

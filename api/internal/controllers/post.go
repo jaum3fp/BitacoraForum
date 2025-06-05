@@ -40,9 +40,31 @@ func (h *PostController) GetCountryPosts(c *fiber.Ctx) error {
 	return c.JSON(posts)
 }
 
+func (h *PostController) GetPostCommentsNumber(c *fiber.Ctx) error {
+	super := c.Params("super")
+	posts, err := h.PostRepo.GetPostCommentsNumber(super)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(posts)
+}
+
 func (h *PostController) GetCountryPostsNumber(c *fiber.Ctx) error {
 	flag := c.Params("flag")
 	posts, err := h.PostRepo.GetCountryPostsNumber(flag)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(posts)
+}
+
+func (h *PostController) GetPostComments(c *fiber.Ctx) error {
+	super := c.Params("super")
+	posts, err := h.PostRepo.GetPostComments(super)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})

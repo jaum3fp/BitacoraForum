@@ -8,6 +8,7 @@ const props = withDefaults(defineProps<{
     author: string,
     flag: string,
     modButtons: boolean,
+    comments_total: number,
 }>(), {
     modButtons: false
 })
@@ -34,7 +35,7 @@ defineEmits<{
         </div>
     </div>
     <div class="post-card-actions flex flex-col gap-2 items-start h-full px-2">
-        <UChip position="bottom-right" size="3xl" :text="0">
+        <UChip position="bottom-right" size="3xl" :text="props.comments_total">
             <UButton icon="i-charm-messages" color="neutral" variant="outline" class="text-gray-600" @click="navigateTo('/discussions/' + id)" />
         </UChip>
         <UButton v-if="props.modButtons" icon="i-charm-bin" color="neutral" variant="outline"

@@ -68,6 +68,7 @@ const openDeleteModal = async (id: number) => {
             :author="post.owner_username"
             :flag="post.flag"
             :mod-buttons="props.mod"
+            :comments_total="post.comments_total"
             @delete="openDeleteModal"
             image="none" />
         <USkeleton v-else />

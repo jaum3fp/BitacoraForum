@@ -21,6 +21,8 @@ interface PostModelType {
   views: number,
   owner_id: number,
   country_alpha: string,
+  comments_total: number,
+  owner_username?: string,
 }
 
 interface NewPostModel {
@@ -29,6 +31,7 @@ interface NewPostModel {
   content: string,
   country_alpha: string,
   owner_id: number,
+  super_id?: number
 }
 
 const PostModel = {
@@ -55,6 +58,17 @@ const PostModel = {
         return posts || []
       } catch (error) {
         console.error("No se han podido obtener el post:", error)
+        return []
+      }
+    },
+
+    getComments: async (id: number): Promise<any> => {
+      try {
+        const posts = await useApiCall("bitacoraForum", ("post/comments/" + id))
+        if (posts.length <= 0) return posts
+        return posts || []
+      } catch (error) {
+        console.error("No se han podido obtener los comentarios:", error)
         return []
       }
     },

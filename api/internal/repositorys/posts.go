@@ -16,9 +16,11 @@ type PostRepository interface {
 	UpdatePost(id string, post dtos.PostUsernameDTO) error
 	GetCountryPosts(flag string) ([]dtos.PostDTO, error)
 	GetCountryPostsNumber(flag string) (int64, error)
+	GetPostCommentsNumber(super string) (int64, error)
 	DeletePost(id string) error
 	IncrementPostViews(id string) error
 	GetPostsByTag(id string) ([]dtos.PostDTO, error)
+	GetPostComments(super string) ([]dtos.PostUsernameDTO, error)
 }
 
 type postRepo struct {
@@ -43,6 +45,18 @@ func (r *postRepo) GetCountryPosts(flag string) ([]dtos.PostDTO, error) {
 	return posts, nil
 }
 
+func (r *postRepo) GetPostCommentsNumber(super string) (int64, error) {
+	var posts int64
+	if err := r.db.Model(&models.Post{}).
+		Where("super_id = ?", super).
+		Count(&posts).Error; err != nil {
+
+		return posts, err
+	}
+
+	return posts, nil
+}
+
 func (r *postRepo) GetCountryPostsNumber(flag string) (int64, error) {
 	var posts int64
 	if err := r.db.Model(&models.Post{}).
@@ -57,9 +71,15 @@ func (r *postRepo) GetCountryPostsNumber(flag string) (int64, error) {
 
 func (r *postRepo) GetAllPosts(filters map[string]string) ([]dtos.PostUsernameDTO, error) {
 
+	subQuery := r.db.
+		Select("COUNT(*)").
+		Table("posts AS comment").
+		Where("comment.super_id = posts.id")
+
 	query := r.db.Model(&models.Post{}).
-		Select("posts.*, users.username AS owner_username").
-		Joins("JOIN users ON posts.owner_id = users.id")
+		Select("posts.*, users.username AS owner_username, (?) AS comments_total", subQuery).
+		Joins("JOIN users ON posts.owner_id = users.id").
+		Where("posts.super_id IS NULL")
 
 	if title, ok := filters["title"]; ok {
 		query = query.Where("posts.title LIKE ?", "%"+title+"%")
@@ -80,12 +100,34 @@ func (r *postRepo) GetAllPosts(filters map[string]string) ([]dtos.PostUsernameDT
 	return posts, nil
 }
 
+func (r *postRepo) GetPostComments(super string) ([]dtos.PostUsernameDTO, error) {
+	query := r.db.Model(&models.Post{}).
+		Select("posts.*, users.username AS owner_username").
+		Joins("JOIN users ON posts.owner_id = users.id").
+		Where("posts.super_id = ?", super)
+
+	var posts []dtos.PostUsernameDTO
+	if err := query.Find(&posts).Error; err != nil {
+		return posts, err
+	}
+
+	return posts, nil
+}
+
+
 func (r *postRepo) GetPost(id string) (dtos.PostUsernameDTO, error) {
 
 	var post dtos.PostUsernameDTO
+
+	subQuery := r.db.
+		Select("COUNT(*)").
+		Table("posts AS comment").
+		Where("comment.super_id = posts.id")
+
 	if err := r.db.Model(&models.Post{}).
-		Select("posts.*, users.username AS owner_username").
+		Select("posts.*, users.username AS owner_username, (?) AS comments_total", subQuery).
 		Joins("JOIN users ON posts.owner_id = users.id").
+		Where("posts.super_id IS NULL").
 		Find(&post, id).Error; err != nil {
 
 		return post, err
@@ -97,11 +139,12 @@ func (r *postRepo) GetPost(id string) (dtos.PostUsernameDTO, error) {
 func (r *postRepo) CreatePost(post dtos.PostDTO) error {
 
 	err := r.db.Create(&models.Post{
-		Title: post.Title,
-		Description: post.Description,
-		Content: post.Content,
-		OwnerID: post.OwnerID,
-		CountryAlpha: post.CountryAlpha,
+		Title:      	post.Title,
+		Description:	post.Description,
+		Content:    	post.Content,
+		OwnerID:    	post.OwnerID,
+		CountryAlpha:	post.CountryAlpha,
+		SuperID: 		post.SuperID,
 	}).Error
 	return err
 }
