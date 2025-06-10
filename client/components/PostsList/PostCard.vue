@@ -29,7 +29,7 @@ const avatarUrl = props.author_avatar ? API.bitacoraForumAvatars + props.author_
 
 <template>
 
-<div class="post-card flex h-40 border-secondary-300 dark:border-primary rounded-md border-2 p-2 items-center gap-4" @click="navigateTo('/discussions/' + id)">
+<div class="post-card flex bg-primary/4 via-transparent h-40 border-y-2 dark:border-2 border-y-secondary-300 dark:border-primary dark:rounded-md p-2 items-center gap-4" @click="navigateTo('/discussions/' + id)">
     <div class="post-card-header h-full flex items-center justify-center">
         <img class="h-full w-46 rounded" :src="props.flag" alt="Flag" />
     </div>

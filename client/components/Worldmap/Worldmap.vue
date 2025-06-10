@@ -8,15 +8,14 @@ const emit = defineEmits(['clickCountry', 'mouseoverCountry'])
 const handleWorldmapSvg = (event: MouseEvent) => {
   const target = event.target as SVGElement
   const cc = target.getAttribute('cc') || target.parentElement?.getAttribute('cc')
-  console.log('Emit selectedCountry', cc)
   return cc
 }
 
-const handleClick = (event: MouseEvent) => {console.log("click")
+const handleClick = (event: MouseEvent) => {
   const cc = handleWorldmapSvg(event)
   if (cc) emit('clickCountry', event, cc)
 }
-const handleMouseover = (event: MouseEvent) => {console.log("over")
+const handleMouseover = (event: MouseEvent) => {
   const cc = handleWorldmapSvg(event)
   emit('mouseoverCountry', event, cc)
 }

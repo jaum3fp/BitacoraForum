@@ -103,7 +103,7 @@ const buildItems = computed(() => {
 
 const active = ref()
 const collapse = ref(false)
-watchEffect(() => console.log(active.value))
+
 defineShortcuts({
   1: () => active.value = '0',
   2: () => active.value = '1',
