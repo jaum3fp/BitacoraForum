@@ -7,6 +7,9 @@
       <Navbar />
     </aside>
     <main class="text-center px-12 flex-1 overflow-y-auto">
+      <div class="my-8">
+        <NavBreadcrumb />
+      </div>
       <slot />
     </main>
   </div>
