@@ -5,7 +5,7 @@ Para garantizar una experiencia agradable para todos los usuarios, te pedimos qu
 
 ---
 
-## 1. 🤝 Respeto y cordialidad
+# 1. 🤝 Respeto y cordialidad
 
 - Trata a los demás con respeto.
 - Evita insultos, agresiones o lenguaje ofensivo.
@@ -13,7 +13,7 @@ Para garantizar una experiencia agradable para todos los usuarios, te pedimos qu
 
 ---
 
-## 2. 🧵 Publicaciones relevantes
+# 2. 🧵 Publicaciones relevantes
 
 - Asegúrate de que tu tema esté relacionado con **viajes**.
 - Usa títulos **descriptivos** y evita mensajes ambiguos.
@@ -21,35 +21,35 @@ Para garantizar una experiencia agradable para todos los usuarios, te pedimos qu
 
 ---
 
-## 3. 🚫 Prohibido el spam y la publicidad
+# 3. 🚫 Prohibido el spam y la publicidad
 
 - No publiques enlaces promocionales, anuncios ni publicidad comercial.
 - Las recomendaciones deben ser **imparciales y basadas en experiencias personales**.
 
 ---
 
-## 4. ⚖️ Contenido legal y apropiado
+# 4. ⚖️ Contenido legal y apropiado
 
 - No compartas información falsa, engañosa o ilegal.
 - No publiques contenido protegido por derechos de autor sin permiso.
 
 ---
 
-## 5. 🔒 Seguridad y privacidad
+# 5. 🔒 Seguridad y privacidad
 
 - No compartas datos personales (como dirección, teléfono o información bancaria).
 - Usa los **mensajes privados** para intercambiar información sensible.
 
 ---
 
-## 6. 🛡️ Moderación y cumplimiento
+# 6. 🛡️ Moderación y cumplimiento
 
 - Los moderadores pueden **editar, mover o eliminar** publicaciones que incumplan las normas.
 - El incumplimiento reiterado puede llevar a **suspensión o expulsión del foro**.
 
 ---
 
-## ✅ En resumen
+# ✅ En resumen
 
 Siguiendo estas reglas, contribuimos a crear una comunidad útil, segura y acogedora para todos.
 

@@ -2,7 +2,6 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { UserModel } from '~/models/user'
 import { API } from '~/consts'
-import type { LocaleObject } from '@nuxtjs/i18n'
 
 
 const userStore = useUserStore()
@@ -116,15 +115,15 @@ defineShortcuts({
 <template>
   <div>
     <nav class="flex flex-col gap-[4vh] mt-4">
-        <UButton
+        <!--UButton
             :icon="'i-charm-arrow-' + (collapse ? 'right' : 'left' )"
             class="ms-auto me-4"
             size="md"
             color="primary"
             variant="link"
             @click="collapse = !collapse"
-        />
-        <h1 class="text-xl text-center font-bold">Bitacora Forum</h1>
+        /-->
+        <h1 class="text-xl text-center font-bold mt-10 mx-4">Bitacora Forum</h1>
         <UNavigationMenu
             v-model="active"
             :items="buildItems"

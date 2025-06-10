@@ -2,8 +2,6 @@
 import Worldmap from '../components/Worldmap/Worldmap.vue';
 import CountryCard from '../components/Worldmap/CountryCard.vue';
 import { ref } from 'vue';
-import { CountryModel } from '~/models/country';
-import type { CountryModelType } from '~/models/country';
 
 
 const countriesStore = useCountriesStore()

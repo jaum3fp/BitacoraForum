@@ -1,14 +1,14 @@
 <svg id="worldmap" version="1.2" baseProfile="tiny" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="9 3 940 530" xml:space="preserve">
       <!-- Adapted from http://en.wikipedia.org/wiki/File:World_map_-_low_resolution.svg -->
     <style>
-      [cc] {
+[cc] {
   fill: transparent;
   stroke: #555;
   stroke-width: 0.5px;
 }
 [cc]:hover {
-  fill: #f0f0f0;
-  stroke: #000;
+  fill: transparent;
+  stroke: #3498db;
   stroke-width: 1px;
 }
     </style>

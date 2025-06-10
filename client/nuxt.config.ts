@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
   ],
 
-  css: ['~/assets/css/global.css', '~/assets/css/tailwind.css'],
+  css: ['~/assets/css/tailwind.css'],
 
   svgo: {
     autoImportPath: '@/assets/svg',
