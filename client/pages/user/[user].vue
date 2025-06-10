@@ -15,7 +15,7 @@ const urlParam = useRoute().params.user as string
 
 const { data: user } = useAsyncData('getUser', async () => await UserModel.getUserData(urlParam))
 
-const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForumAvatars + user.value.profile_img : 'https://github.com/benjamincanac.png')
+const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForumAvatars + user.value.profile_img : 'https://avatars.githubusercontent.com/u/115469546?s=400&v=4')
 
 </script>
 

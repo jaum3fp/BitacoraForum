@@ -63,14 +63,15 @@ const openDeleteModal = async (id: number) => {
         <PostCard v-if="posts" v-for="post in posts"
             :id="post.id"
             :title="post.title"
-            :description="post.content"
+            :description="post.description"
+            :content="post.content"
             :country_alpha="post.country_alpha"
             :author="post.owner_username"
             :flag="post.flag"
             :mod-buttons="props.mod"
             :comments_total="post.comments_total"
             @delete="openDeleteModal"
-            image="none" />
+            image="none" class="my-4" />
         <USkeleton v-else />
     </div>
 </div>

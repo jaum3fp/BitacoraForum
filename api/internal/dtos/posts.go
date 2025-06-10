@@ -21,4 +21,5 @@ func (PostDTO) TableName() string {
 type PostUsernameDTO struct {
 	PostDTO
 	OwnerUsername string `json:"owner_username"`
+	OwnerAvatar   string `json:"owner_avatar"`
 }

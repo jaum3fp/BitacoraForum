@@ -25,7 +25,7 @@ const showCreateForm = ref(false)
 
 watch(pimg, async () => await UserModel.updateUserData("profile_image", pimg.value))
 
-const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForumAvatars + user.value.profile_img : 'https://github.com/benjamincanac.png')
+const avatarImageUrl = computed(() => user.value?.profile_img ? API.bitacoraForumAvatars + user.value.profile_img : 'https://avatars.githubusercontent.com/u/115469546?s=400&v=4')
 
 async function onSubmit(state: any) {
   if (userStore.user) {

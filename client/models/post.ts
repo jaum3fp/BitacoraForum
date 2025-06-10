@@ -23,6 +23,7 @@ interface PostModelType {
   country_alpha: string,
   comments_total: number,
   owner_username?: string,
+  owner_avatar?: string,
 }
 
 interface NewPostModel {

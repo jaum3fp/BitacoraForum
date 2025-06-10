@@ -27,7 +27,7 @@ const avatarImageUrl = computed(() => {
       return modelValue.value
     }
   } else {
-    return 'https://github.com/benjamincanac.png'
+    return 'https://avatars.githubusercontent.com/u/115469546?s=400&v=4'
   }
 })
 

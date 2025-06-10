@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { UAvatar, UTree } from '#components';
+import { API } from '~/consts';
 import { PostModel } from '~/models/post';
 import type { PostModelType } from '~/models/post';
 
@@ -16,6 +17,9 @@ const { data: post } = await useAsyncData<PostModelType>('getPost' + postId, asy
 const { data: comments, refresh: refreshComments } =
   await useAsyncData<Array<PostModelType>>('getComments' + postId, async () => await PostModel.getComments(postId))
 
+const avatarImageUrl = computed(() =>
+  post.value?.owner_avatar ? API.bitacoraForumAvatars + post.value.owner_avatar : 'https://avatars.githubusercontent.com/u/115469546?s=400&v=4')
+
 </script>
 
 <template>
@@ -26,7 +30,7 @@ const { data: comments, refresh: refreshComments } =
             <h1 class="py-5 text-4xl">{{ post.title }}</h1>
         </header>
         <div class="flex items-center gap-5">
-            <UAvatar size="3xl" src="https://api.bitacoraforum.es:8080/static/images/avatars/20250527_110637_newuser5.png" />
+            <UAvatar size="3xl" :src="avatarImageUrl" />
             <p class="text-xl">By <ULink :to="'/user/' + post.owner_username">{{ post.owner_username }}</ULink></p>
         </div>
     </div>

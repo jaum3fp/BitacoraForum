@@ -2,6 +2,7 @@
 import { UButton, UForm, UFormField, UTextarea } from '#components';
 import type { FormSubmitEvent } from '@nuxt/ui';
 import { PostModel, type NewPostModel, type PostModelType } from '~/models/post';
+import { API } from '~/consts';
 
 
 const props = defineProps<{
@@ -47,7 +48,8 @@ async function onSubmit(event: FormSubmitEvent<CommentState>) {
         <USeparator class="my-5" />
         <div class="commentcard">
             <div>
-                <ULink :to="'/user/' + comment.owner_username">{{ comment.owner_username }}</ULink>
+                <UAvatar size="md" :src="comment.owner_avatar ? API.bitacoraForumAvatars + comment.owner_avatar : 'https://avatars.githubusercontent.com/u/115469546?s=400&v=4'" />
+                <ULink :to="'/user/' + comment.owner_username" class="ms-4">{{ comment.owner_username }}</ULink>
             </div>
             <div class="relative flex flex-col p-8 mt-4 text-left rounded-lg bg-white/10 text-[var(--text-color)] overflow-y-auto break-words">
                 <div class="absolute top-2 right-2 text-sm text-gray-600 font-mono">

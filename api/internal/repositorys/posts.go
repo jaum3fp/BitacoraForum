@@ -34,7 +34,7 @@ func NewPostRepository(db *gorm.DB) PostRepository {
 func (r *postRepo) GetCountryPosts(flag string) ([]dtos.PostDTO, error) {
 	var posts []dtos.PostDTO
 	if err := r.db.Model(&models.Post{}).
-		Select("posts.*, users.username AS owner_username").
+		Select("posts.*, users.username AS owner_username, users.profile_image AS owner_avatar").
 		Joins("JOIN users ON posts.owner_id = users.id").
 		Where("posts.country_alpha = ?", flag).
 		Find(&posts).Error; err != nil {
@@ -77,7 +77,7 @@ func (r *postRepo) GetAllPosts(filters map[string]string) ([]dtos.PostUsernameDT
 		Where("comment.super_id = posts.id")
 
 	query := r.db.Model(&models.Post{}).
-		Select("posts.*, users.username AS owner_username, (?) AS comments_total", subQuery).
+		Select("posts.*, users.username AS owner_username, users.profile_image AS owner_avatar, (?) AS comments_total", subQuery).
 		Joins("JOIN users ON posts.owner_id = users.id").
 		Where("posts.super_id IS NULL")
 
@@ -102,7 +102,7 @@ func (r *postRepo) GetAllPosts(filters map[string]string) ([]dtos.PostUsernameDT
 
 func (r *postRepo) GetPostComments(super string) ([]dtos.PostUsernameDTO, error) {
 	query := r.db.Model(&models.Post{}).
-		Select("posts.*, users.username AS owner_username").
+		Select("posts.*, users.username AS owner_username, users.profile_image AS owner_avatar").
 		Joins("JOIN users ON posts.owner_id = users.id").
 		Where("posts.super_id = ?", super)
 
@@ -125,7 +125,7 @@ func (r *postRepo) GetPost(id string) (dtos.PostUsernameDTO, error) {
 		Where("comment.super_id = posts.id")
 
 	if err := r.db.Model(&models.Post{}).
-		Select("posts.*, users.username AS owner_username, (?) AS comments_total", subQuery).
+		Select("posts.*, users.username AS owner_username, users.profile_image AS owner_avatar, (?) AS comments_total", subQuery).
 		Joins("JOIN users ON posts.owner_id = users.id").
 		Where("posts.super_id IS NULL").
 		Find(&post, id).Error; err != nil {
