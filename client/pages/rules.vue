@@ -1,7 +1,11 @@
 <script lang="ts" setup>
-const { data: page } = await useAsyncData("rules", () => {
-  return queryCollection('rules').first()
+const { locale } = useI18n()
+
+const { data: pages } = await useAsyncData("rules" + locale.value, () => {
+  return queryCollection('rules').all()
 })
+
+const page = computed(() => pages.value?.find(it => it.id.includes(`rules/index.${locale.value}.md`)))
 </script>
 
 <template>
@@ -9,12 +13,3 @@ const { data: page } = await useAsyncData("rules", () => {
         <ContentRenderer :value="page" class="rules" />
     </div>
 </template>
-
-<style scoped>
-
-.rules a * {
-    color: red;
-    text-decoration: none;
-}
-
-</style>
