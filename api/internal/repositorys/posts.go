@@ -62,7 +62,7 @@ func (r *postRepo) GetPostCommentsNumber(super string) (int64, error) {
 func (r *postRepo) GetCountryPostsNumber(flag string) (int64, error) {
 	var posts int64
 	if err := r.db.Model(&models.Post{}).
-		Where("country_alpha = ?", flag).
+		Where("country_alpha = ? AND super_id IS NULL", flag).
 		Count(&posts).Error; err != nil {
 
 		return posts, err
