@@ -14,6 +14,7 @@ const emit = defineEmits<{
 }>()
 
 const userStore = useUserStore()
+const i18n = useI18n()
 
 const zodPasswordString = z.string()
   .regex(regexes.password.medium, 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character')
@@ -61,29 +62,29 @@ watch(modelValue, () => emit('close'))
                     <UFormField name="profile_img">
                         <ProfileImageField v-model="state.profile_img" />
                     </UFormField>
-                    <UFormField label="Username" name="username" class="w-full">
+                    <UFormField :label="i18n.t('form_username')" name="username" class="w-full">
                         <UInput disabled v-model="state.username" class="w-full" />
                     </UFormField>
                 </div>
 
-                <UFormField label="Email" name="email">
+                <UFormField :label="i18n.t('form_email')" name="email">
                     <UInput v-model="state.email" class="w-full" />
                 </UFormField>
 
-                <UFormField label="Name" name="name">
+                <UFormField :label="i18n.t('form_name')" name="name">
                     <UInput v-model="state.name" class="w-full" />
                 </UFormField>
 
-                <UFormField label="Surnames" name="surnames">
+                <UFormField :label="i18n.t('form_surnames')" name="surnames">
                     <UInput v-model="state.surnames" class="w-full" />
                 </UFormField>
 
-                <UButton class="me-auto">Cambiar contraseña</UButton>
+                <UButton class="me-auto">{{ i18n.t('user_profile_form_change_password') }}</UButton>
 
             </div>
         </template>
         <template v-show="alteredState" #footer>
-            <UButton color="primary" @click="onSubmit(state)">Guardar cambios</UButton>
+            <UButton color="primary" @click="onSubmit(state)">{{ i18n.t('user_profile_form_submit_button') }}</UButton>
         </template>
     </USlideover>
 

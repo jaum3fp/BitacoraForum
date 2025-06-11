@@ -19,6 +19,8 @@ defineEmits<{
   (e: 'add'): void
 }>()
 
+const i18n = useI18n()
+
 const countryStore = useCountriesStore()
 const overlay = useOverlay()
 const deleteModal = overlay.create(DelModal)
@@ -57,7 +59,7 @@ const openDeleteModal = async (id: number) => {
         <SearchBar @search="onSearch" :filter="{
           component: PostsFilter
         }" class="flex-1" />
-        <UButton v-if="props.mod" icon="i-charm-plus" @click="$emit('add')">Add post</UButton>
+        <UButton v-if="props.mod" icon="i-charm-plus" @click="$emit('add')">{{ i18n.t('user_me_add_post') }}</UButton>
     </div>
     <div class="posts-list-content">
         <PostCard v-if="posts" v-for="post in posts"

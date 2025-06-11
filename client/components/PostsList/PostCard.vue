@@ -29,7 +29,7 @@ const avatarUrl = props.author_avatar ? API.bitacoraForumAvatars + props.author_
 
 <template>
 
-<div class="post-card flex bg-primary/4 via-transparent h-40 border-y-2 dark:border-2 border-y-secondary-300 dark:border-primary dark:rounded-md p-2 items-center gap-4" @click="navigateTo('/discussions/' + id)">
+<div class="post-card relative flex bg-primary/4 via-transparent h-40 border-y-2 dark:border-2 border-y-secondary-300 dark:border-primary dark:rounded-md p-2 items-center gap-4" @click="navigateTo('/discussions/' + id)">
     <div class="post-card-header h-full flex items-center justify-center">
         <img class="h-full w-46 rounded" :src="props.flag" alt="Flag" />
     </div>
@@ -39,8 +39,8 @@ const avatarUrl = props.author_avatar ? API.bitacoraForumAvatars + props.author_
                 <UIcon name="i-charm-eye" class="text-xl" />
                 {{ props.views }}
             </div>
-            <h2 class="text-lg font-semibold text-center w-full truncate mb-3">{{ props.title }}</h2>
-            <p class="text-sm text-default/70 line-clamp-2 px-1 h-full">{{ props.description }}</p>
+            <h2 class="text-lg hidden lg:block font-semibold text-center w-full truncate mb-3">{{ props.title }}</h2>
+            <p class="text-sm hidden lg:block text-default/70 line-clamp-2 px-1 h-full">{{ props.description }}</p>
         </div>
         <div class="post-author font-bold text-xs text-left text-gray-500 px-1" @click.stop>
             <UAvatar :src="avatarUrl" size="sm" />

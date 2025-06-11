@@ -5,6 +5,8 @@ import CountryChooser from './Fields/CountryChooser.vue';
 
 const modelValue = defineModel<boolean>()
 
+const i18n = useI18n()
+
 const emit = defineEmits<{
   (e: 'close'): void
   (e: 'submit', state: Schema): void
@@ -23,7 +25,6 @@ const props = withDefaults(defineProps<{
   title?: string
   initialData?: any
 }>(), {
-  title: "Discussion form",
   initialData: {}
 })
 
@@ -47,27 +48,27 @@ watch(modelValue, () => emit('close'))
             <h1 class="text-2xl font-bold">{{ props.title }}</h1>
         </template>
         <template #footer>
-            <UButton color="primary" :disabled="!schema.safeParse(state).success" @click="handleSubmit(state)">Publicar</UButton>
-            <UButton color="neutral" variant="outline" @click="modelValue = false">Cancelar</UButton>
+            <UButton color="primary" :disabled="!schema.safeParse(state).success" @click="handleSubmit(state)">{{ i18n.t('form_publicate') }}</UButton>
+            <UButton color="neutral" variant="outline" @click="modelValue = false">{{ i18n.t('form_cancel') }}</UButton>
         </template>
         <template #body>
             <div class="flex flex-col gap-6">
 
                 <div class="flex gap-6">
-                    <UFormField label="Title" name="title" class="">
+                    <UFormField :label="i18n.t('form_title')" name="title" class="">
                         <UInput v-model="state.title" class="w-96" />
                     </UFormField>
 
-                    <UFormField label="Country" name="country">
+                    <UFormField :label="i18n.t('form_country')" name="country">
                         <CountryChooser v-model="state.country_alpha" />
                     </UFormField>
                 </div>
 
-                <UFormField label="Description" name="description">
+                <UFormField :label="i18n.t('form_description')" name="description">
                     <UTextarea v-model="state.description" class="w-full" />
                 </UFormField>
 
-                <UFormField label="Content" name="content">
+                <UFormField :label="i18n.t('form_content')" name="content">
                     <UTextarea v-model="state.content" class="w-full" />
                 </UFormField>
 

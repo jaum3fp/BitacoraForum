@@ -20,6 +20,8 @@ const emit = defineEmits<{
   (e: 'search', value: string): void
 }>()
 
+const i18n = useI18n()
+
 const searchInput = ref("")
 
 const searching = ref(false)
@@ -51,12 +53,12 @@ watch(searchInput, (newVal) => {
             size="xl"
             :loading="searching"
             icon="i-charm-search"
-            placeholder="Search..."
+            :placeholder="i18n.t('search_bar')"
             class="w-full"
             v-bind="$attrs"
         >
-            <!--template v-if="props.clearable || props.filter" #trailing>
-                <UButton v-if="props.clearable && searchInput.length > 0"
+            <template v-if="props.clearable && searchInput.length > 0" #trailing>
+                <UButton
                     color="neutral"
                     variant="link"
                     size="sm"
@@ -64,8 +66,8 @@ watch(searchInput, (newVal) => {
                     aria-label="Clear input"
                     @click="searchInput = ''"
                 />
-                <component v-if="props.filter" :is="props.filter.component" v-bind="props.filter.args" />
-            </template-->
+                <!--component v-if="props.filter" :is="props.filter.component" v-bind="props.filter.args" /-->
+            </template>
         </UInput>
     </div>
 </template>

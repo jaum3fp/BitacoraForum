@@ -34,12 +34,14 @@ const buildItems = computed(() => {
     avatar: {
       src: i18nItemChildren.find(item => item.value === i18n.locale.value)?.avatar.src
     },
-    label: i18n.locale.value,
+    label: i18n.locales.value.find(it => it.code === i18n.locale.value)?.name,
     children: i18nItemChildren
   })
   const userItem: NavigationMenuItem = ({
     avatar: {
-      src: userStore.user?.profile_img ? API.bitacoraForumAvatars + userStore.user.profile_img : 'https://avatars.githubusercontent.com/u/115469546?v=4'
+      src: userStore.user?.profile_img ?
+      API.bitacoraForumAvatars + userStore.user.profile_img :
+      'https://avatars.githubusercontent.com/u/115469546?v=4'
     },
     label: userStore.user?.username,
     children: [
@@ -91,7 +93,7 @@ const buildItems = computed(() => {
     },
   ]
   const helpItem: NavigationMenuItem = {
-    label: 'Help',
+    label: i18n.t('nav_help'),
     icon: 'i-charm-help',
     disabled: true
   }

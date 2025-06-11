@@ -3,6 +3,8 @@ import { PostModel } from '~/models/post';
 import type { PostModelType } from '~/models/post';
 import PostForm from '~/components/Forms/PostForm.vue';
 
+const i18n = useI18n()
+
 const postId = parseInt(useRoute().params.id as string)
 const { data: post } = await useAsyncData<PostModelType>('getPost' + postId, async () => await PostModel.getPostById(postId))
 
@@ -29,6 +31,6 @@ async function onSubmit(state: any) {
 
 <template>
 <div v-if="post" class="block py-8 text-left">
-    <PostForm v-model="showForm" :initial-data="post" title="Edit discussion" @close="navigateTo('/user/me')" @submit="onSubmit" />
+    <PostForm v-model="showForm" :initial-data="post" :title="i18n.t('edit_post_form_title')" @close="navigateTo('/user/me')" @submit="onSubmit" />
 </div>
 </template>

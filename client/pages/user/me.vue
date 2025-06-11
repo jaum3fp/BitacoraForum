@@ -16,6 +16,7 @@ definePageMeta({
 })
 
 const userStore = useUserStore()
+const i18n = useI18n()
 
 const { data: user, refresh: userRefresh } = useAsyncData('getUser', async () => await userStore.loadAndGet())
 
@@ -64,7 +65,7 @@ async function onSubmit(state: any) {
         </template>
     </UserProfileLayout>
     <UserProfileForm v-model="showEditForm" @close="userRefresh()" />
-    <PostForm v-model="showCreateForm" title="Create new discussion" @submit="onSubmit" />
+    <PostForm v-model="showCreateForm" :title="i18n.t('create_post_form_title')" @submit="onSubmit" />
 </div>
 
 </template>
