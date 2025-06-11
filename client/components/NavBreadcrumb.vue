@@ -7,7 +7,10 @@ const localePath = useLocalePath()
 const i18n = useI18n()
 
 const items = computed<BreadcrumbItem[]>(() => pathNames.value
-  .filter((it, idx) => !(it === '' && idx === 1))
+  .filter((it, idx) =>
+    !(it === '' && idx === 1) &&
+    !i18n.locales.value.map(i => i.code).includes(it as any)
+  )
   .map((it, idx) => {
     if (it === '') {
       return ({
