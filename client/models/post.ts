@@ -9,6 +9,9 @@ interface PostsFilterType {
   author?: string,
   cc?: string,
   tags?: Array<string>,
+  start?: number,
+  end?: number,
+  title?: string,
 }
 
 interface PostModelType {
@@ -24,6 +27,7 @@ interface PostModelType {
   comments_total: number,
   owner_username?: string,
   owner_avatar?: string,
+  flag?: string,
 }
 
 interface NewPostModel {
@@ -35,17 +39,25 @@ interface NewPostModel {
   super_id?: number
 }
 
+interface AllPostsResponse {
+  data: Array<PostModelType>,
+  total: number,
+}
+
 const PostModel = {
 
     getAllPosts: async (filter: PostsFilterType): Promise<any> => {
       try {
         const queryParams = buildQueryParams(filter)
-        const posts = await useApiCall("bitacoraForum", "post/all" + queryParams)
-        if (posts.length <= 0) return posts
-        const alphas: Set<string> = new Set(posts.map((post: any) => post.country_alpha))
+        const posts: AllPostsResponse = await useApiCall("bitacoraForum", "post/all" + queryParams)
+        if (posts.data.length <= 0) return posts
+        const alphas: Set<string> = new Set(posts.data.map((post: any) => post.country_alpha))
         const flags: any = await CountryModel.getCountryFlags([...alphas])
-        const res = posts.map((post: any) => ({ ...post, flag: flags[post.country_alpha] }))
-        return res || []
+        const res = posts.data.map((post: any) => ({ ...post, flag: flags[post.country_alpha] }))
+        return {
+          "data": res,
+          "total": posts.total,
+        }
       } catch (error) {
         console.error("No se han podido obtener todos los posts:", error)
         return []

@@ -4,6 +4,6 @@
 
 <template>
 
-<PostsList class="mt-22" />
+<PostsList class="my-22" />
 
 </template>

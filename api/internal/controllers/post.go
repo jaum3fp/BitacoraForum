@@ -26,7 +26,13 @@ func (h *PostController) GetAllPosts(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	return c.JSON(data)
+	totals, err := h.PostRepo.GetTotalPosts(filters)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(fiber.Map{"data": data, "total": totals})
 }
 
 func (h *PostController) GetCountryPosts(c *fiber.Ctx) error {

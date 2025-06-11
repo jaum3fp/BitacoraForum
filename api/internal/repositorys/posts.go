@@ -1,6 +1,7 @@
 package repositorys
 
 import (
+	"strconv"
 	"strings"
 
 	"gorm.io/gorm"
@@ -21,6 +22,7 @@ type PostRepository interface {
 	IncrementPostViews(id string) error
 	GetPostsByTag(id string) ([]dtos.PostDTO, error)
 	GetPostComments(super string) ([]dtos.PostUsernameDTO, error)
+	GetTotalPosts(filters map[string]string) (total int64, err error)
 }
 
 type postRepo struct {
@@ -92,12 +94,44 @@ func (r *postRepo) GetAllPosts(filters map[string]string) ([]dtos.PostUsernameDT
 		query = query.Where("users.username LIKE ?", "%"+author+"%")
 	}
 
+	if startRange, ok := filters["start"]; ok {
+		if endRange, ok := filters["end"]; ok {
+			start, err1 := strconv.Atoi(startRange)
+			end, err2 := strconv.Atoi(endRange)
+			if err1 == nil && err2 == nil && end > start {
+				query = query.Offset(start).Limit(end - start)
+			}
+		}
+	}
+
 	var posts []dtos.PostUsernameDTO
 	if err := query.Find(&posts).Error; err != nil {
 		return posts, err
 	}
 
 	return posts, nil
+}
+
+func (r *postRepo) GetTotalPosts(filters map[string]string) (total int64, err error) {
+	query := r.db.Model(&models.Post{}).
+		Joins("JOIN users ON posts.owner_id = users.id").
+		Where("posts.super_id IS NULL")
+
+	if title, ok := filters["title"]; ok {
+		query = query.Where("posts.title LIKE ?", "%"+title+"%")
+	}
+	if cc, ok := filters["cc"]; ok {
+		countries := strings.Split(cc, ",")
+		query = query.Where("posts.country_alpha IN(?)", countries)
+	}
+	if author, ok := filters["author"]; ok {
+		query = query.Where("users.username LIKE ?", "%"+author+"%")
+	}
+
+	if err = query.Count(&total).Error; err != nil {
+		return
+	}
+	return
 }
 
 func (r *postRepo) GetPostComments(super string) ([]dtos.PostUsernameDTO, error) {

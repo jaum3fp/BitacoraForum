@@ -2,16 +2,18 @@
 import { ref } from 'vue';
 import PostCard from './PostCard.vue';
 import SearchBar from './SearchBar.vue';
-import { type PostsFilterType } from '~/models/post';
+import { type PostModelType, type PostsFilterType } from '~/models/post';
 import PostsFilter from './PostsFilter.vue';
-import { UButton } from '#components';
+import { Paginator, UButton } from '#components';
 import DelModal from '@/components/Modals/DelModal.vue'
 import { PostModel } from '~/models/post';
 
-const props = withDefaults(defineProps<{
+interface PostList {
   filter?: PostsFilterType,
   mod?: boolean
-}>(), {
+}
+
+const props = withDefaults(defineProps<PostList>(), {
   mod: false
 })
 
@@ -27,15 +29,33 @@ const deleteModal = overlay.create(DelModal)
 
 const searchFilter = ref(props.filter)
 
-const { data: posts, refresh: refreshPosts } = useAsyncData(
+const page = ref(1)
+const itemsPerPage = ref(10)
+const total = ref(0)
+
+watch(() => page.value, () => refreshPosts())
+watch(() => itemsPerPage.value, () => refreshPosts())
+
+const { data: posts, refresh: refreshPosts } = useAsyncData<Array<PostModelType>>(
   'posts' + props.filter,
-  async () => await PostModel.getAllPosts(searchFilter.value|| {}),
+  async () => {
+    if (!searchFilter.value) {
+      searchFilter.value = {}
+    }
+    const start = itemsPerPage.value * (page.value - 1)
+    const end = start + itemsPerPage.value
+    searchFilter.value = { ...searchFilter.value, start, end }
+    console.log(searchFilter.value)
+    const res = await PostModel.getAllPosts(searchFilter.value)
+    total.value = res.total
+    return res.data
+  },
   { server: false }
 )
 
 const onSearch = async (searchVal: string) => {
   const cc = countryStore.getAlphaByName(searchVal) || ''
-  searchFilter.value = { ...props.filter, cc }
+  searchFilter.value = { ...props.filter, cc, title: searchVal }
   refreshPosts()
 }
 
@@ -54,7 +74,7 @@ const openDeleteModal = async (id: number) => {
 
 <template>
 
-<div class="posts-listd-flex flex-col">
+<div v-if="posts" class="posts-listd-flex flex-col">
     <div class="posts-list-header mb-4 flex gap-4 w-full">
         <SearchBar @search="onSearch" :filter="{
           component: PostsFilter
@@ -62,21 +82,25 @@ const openDeleteModal = async (id: number) => {
         <UButton v-if="props.mod" icon="i-charm-plus" @click="$emit('add')">{{ i18n.t('user_me_add_post') }}</UButton>
     </div>
     <div class="posts-list-content">
-        <PostCard v-if="posts" v-for="post in posts"
-            :id="post.id"
-            :title="post.title"
-            :description="post.description"
-            :content="post.content"
-            :country_alpha="post.country_alpha"
-            :author="post.owner_username"
-            :flag="post.flag"
-            :mod-buttons="props.mod"
-            :comments_total="post.comments_total"
-            :author_avatar="post.owner_avatar"
-            :views="post.views"
-            @delete="openDeleteModal"
-            image="none" class="my-4" />
-        <USkeleton v-else />
+        <template v-if="posts.length > 0">
+            <Paginator v-model:page="page" v-model:items-per-page="itemsPerPage" :total="total" :sibling-count="3" />
+            <PostCard v-for="post in posts"
+                :id="post.id"
+                :title="post.title"
+                :description="post.description"
+                :content="post.content"
+                :country_alpha="post.country_alpha"
+                :author="post.owner_username || ''"
+                :flag="post.flag || ''"
+                :mod-buttons="props.mod"
+                :comments_total="post.comments_total"
+                :author_avatar="post.owner_avatar || ''"
+                :views="post.views"
+                @delete="openDeleteModal"
+                image="none" class="my-4" />
+            <Paginator v-model:page="page" v-model:items-per-page="itemsPerPage" :total="total" :sibling-count="3" />
+        </template>
+        <USkeleton v-for="post in posts" v-else />
     </div>
 </div>
 
